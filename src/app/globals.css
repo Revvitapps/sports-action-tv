@@ -1,0 +1,131 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  --font-sans: "Inter", "SF Pro Display", ui-sans-serif, system-ui;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius: 0.65rem;
+
+  --background: oklch(0.14 0.03 250);
+  --foreground: oklch(0.97 0.02 250);
+  --card: color-mix(in oklch, var(--background) 70%, white);
+  --card-foreground: var(--foreground);
+  --popover: color-mix(in oklch, var(--background) 60%, black);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.61 0.17 28);
+  --primary-foreground: oklch(0.98 0.02 250);
+  --secondary: oklch(0.25 0.03 250);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.2 0.02 250);
+  --muted-foreground: oklch(0.75 0.04 250);
+  --accent: oklch(0.74 0.14 126);
+  --accent-foreground: oklch(0.14 0.02 250);
+  --destructive: oklch(0.58 0.23 20);
+  --border: color-mix(in oklch, var(--foreground) 12%, transparent);
+  --input: color-mix(in oklch, var(--foreground) 8%, transparent);
+  --ring: color-mix(in oklch, var(--primary) 50%, white);
+  --sidebar: color-mix(in oklch, var(--background) 65%, black);
+  --sidebar-foreground: var(--foreground);
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --radius-lg: calc(var(--radius) + 0.25rem);
+  --radius-md: var(--radius);
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01" on, "cv05" on;
+  }
+}
+
+.noise-surface {
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(255,255,255,0.06), transparent 55%),
+    radial-gradient(circle at 75% 25%, rgba(255,255,255,0.05), transparent 60%),
+    radial-gradient(circle at 50% 75%, rgba(255,255,255,0.04), transparent 65%);
+}
+
+.grid-lines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    );
+  background-size: 40px 40px;
+  mask-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.6));
+  pointer-events: none;
+}
+
+.glass {
+  background-color: color-mix(in srgb, var(--color-background) 70%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.glass-panel {
+  background-color: color-mix(in srgb, var(--color-background) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 12%, transparent);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+}
+
+.hero-background-image {
+  object-position: var(--hero-bg-mobile, 50% 35%);
+}
+
+@media (min-width: 768px) {
+  .hero-background-image {
+    object-position: var(--hero-bg-md, var(--hero-bg-mobile, 50% 35%));
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-background-image {
+    object-position: var(--hero-bg-lg, var(--hero-bg-md, var(--hero-bg-mobile, 50% 35%)));
+  }
+}
+
+.section-shell {
+  width: min(1280px, calc(100% - clamp(2rem, 6vw, 8rem)));
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+@media (max-width: 640px) {
+  .section-shell {
+    width: calc(100% - 1.5rem);
+    padding-inline: 0.75rem;
+  }
+}
