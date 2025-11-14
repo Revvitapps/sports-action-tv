@@ -1,5 +1,9 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Reveal from "@/components/Reveal";
 import { MotionDiv } from "@/components/MotionDiv";
@@ -45,10 +49,19 @@ const heroVisuals = [
 const inspirationBeats = ["DirtVision energy", "RacinDirt grit", "FloSports polish"];
 
 export function HeroSection() {
+  const heroRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const introOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const introY = useTransform(scrollYProgress, [0, 0.4], [0, -120]);
+
   return (
-    <section className="relative w-full min-h-[92svh] overflow-hidden px-0 pt-24 pb-24">
+    <section ref={heroRef} className="relative w-full min-h-[92svh] overflow-hidden px-0 pt-24 pb-24">
       <div className="relative flex w-full flex-col gap-14">
-        <div className="space-y-10 px-6 text-center sm:px-12 lg:px-20">
+        <motion.div style={{ opacity: introOpacity, y: introY }} className="space-y-10 px-6 text-center sm:px-12 lg:px-20">
           <Reveal>
             <MotionDiv
               delay={0.05}
@@ -92,23 +105,26 @@ export function HeroSection() {
               </h1>
             </MotionDiv>
           </Reveal>
-        </div>
-        <div className="w-full space-y-10 px-4 sm:px-8">
+        </motion.div>
+        <div className="w-full space-y-10 px-0">
           {heroVisuals.map((visual, index) => (
             <Reveal key={visual.headline}>
               <MotionDiv
                 delay={0.2 + index * 0.1}
-                className="group relative min-h-[360px] w-full overflow-hidden border border-white/15 bg-white/5 shadow-[0_30px_90px_rgba(0,0,0,0.45)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_45px_120px_rgba(0,0,0,0.6)]"
+                variant={index % 2 === 0 ? "left" : "right"}
+                className="group relative min-h-[360px] w-full overflow-hidden transition duration-500 hover:-translate-y-1"
               >
                 <Image
                   src={visual.src}
                   alt={visual.headline}
                   fill
                   sizes="(max-width: 1024px) 100vw, 90vw"
-                  className="absolute inset-0 h-full w-full object-cover brightness-[1.45] transition duration-500 group-hover:scale-105 group-hover:brightness-[1.6]"
+                  className={`absolute inset-0 h-full w-full object-cover brightness-[1.45] transition duration-500 group-hover:scale-105 group-hover:brightness-[1.6] ${
+                    visual.headline === "Slide jobs + sparks" ? "object-[50%_35%]" : ""
+                  }`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/65" />
-                <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center gap-5 px-6 py-12 text-center text-white lg:px-12">
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent" />
+                <div className="relative flex w-full flex-col items-center gap-6 px-6 py-14 text-center text-white md:px-10 lg:px-16">
                   <div className="flex flex-wrap items-center justify-center gap-3 text-black">
                     {visual.categories.map((category) => (
                       <span
