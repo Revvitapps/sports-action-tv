@@ -21,12 +21,16 @@ export const metadata: Metadata = {
     siteName: "SportsActionTV Subscribe",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80",
-        width: 1600,
-        height: 900,
-        alt: "SportsActionTV broadcast booth",
+        url: brandAssets.heroBackdrop ?? "/hero-image.png",
+        width: 1200,
+        height: 630,
+        alt: "SportsActionTV",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [brandAssets.heroBackdrop ?? "/hero-image.png"],
   },
   metadataBase: new URL("https://subscribe.sportsactiontv.com"),
   viewport: {
