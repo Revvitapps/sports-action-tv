@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { BackgroundMedia } from "@/components/BackgroundMedia";
+import { brandAssets } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
