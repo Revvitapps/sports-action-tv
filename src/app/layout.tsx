@@ -5,7 +5,9 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { BackgroundMedia } from "@/components/BackgroundMedia";
-import { brandAssets } from "@/lib/site";
+
+// Absolute URL keeps social previews from falling back to the logo.
+const socialImage = "https://subscribe.sportsactiontv.com/hero-image.png";
 
 export const metadata: Metadata = {
   title: {
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "SportsActionTV Subscribe",
     images: [
       {
-        url: brandAssets.heroBackdrop ?? "/hero-image.png",
+        url: socialImage,
         width: 1200,
         height: 630,
         alt: "SportsActionTV",
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    images: [brandAssets.heroBackdrop ?? "/hero-image.png"],
+    images: [socialImage],
   },
   metadataBase: new URL("https://subscribe.sportsactiontv.com"),
   viewport: {
