@@ -92,10 +92,10 @@ export const metadata: Metadata = {
       "Watch the Thanksgiving Rumble and Wayne Poole Memorial live from Paradise Raceway. Full-weekend coverage with replays, multi-cam, and TV apps.",
     images: [
       {
-        url: "/Rumble graphic 1.png",
+        url: "/16-9scheulde.png",
         width: 1200,
         height: 630,
-        alt: "Thanksgiving Rumble at Paradise Raceway",
+        alt: "Thanksgiving Rumble schedule",
       },
     ],
   },
@@ -104,7 +104,7 @@ export const metadata: Metadata = {
     title: "Thanksgiving Rumble + Wayne Poole Memorial | SportsActionTV",
     description:
       "Live coverage of the Thanksgiving Rumble and Wayne Poole Memorial from Paradise Raceway with full replay access.",
-    images: ["/Rumble graphic 1.png"],
+    images: ["/16-9scheulde.png"],
   },
 };
 
