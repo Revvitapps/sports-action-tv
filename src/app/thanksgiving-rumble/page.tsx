@@ -83,6 +83,7 @@ const highlightVideos = [
 ];
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://watch.sportsactiontv.com"),
   title: "Thanksgiving Rumble Weekend | SportsActionTV",
   description:
     "Stream the Thanksgiving Rumble and Wayne Poole Memorial live from Paradise Raceway. Full-weekend coverage on Roku, Fire TV, Apple TV, mobile, and web.",
@@ -90,6 +91,8 @@ export const metadata: Metadata = {
     title: "Thanksgiving Rumble + Wayne Poole Memorial | SportsActionTV",
     description:
       "Watch the Thanksgiving Rumble and Wayne Poole Memorial live from Paradise Raceway. Full-weekend coverage with replays, multi-cam, and TV apps.",
+    url: "https://watch.sportsactiontv.com/thanksgiving-rumble",
+    type: "website",
     images: [
       {
         url: "https://watch.sportsactiontv.com/hero-image.png",
