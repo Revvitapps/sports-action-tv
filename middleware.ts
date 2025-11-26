@@ -1,13 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const allowList = [
-  "/thanksgiving-rumble",
-  "/favicon.ico",
-  "/robots.txt",
-  "/sitemap.xml",
-];
-
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -16,7 +9,12 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/static") ||
     pathname.startsWith("/api") ||
-    allowList.some((path) => pathname === path || pathname.startsWith(`${path}/`))
+    pathname.match(/\.[^/]+$/) || // any file with extension (images, fonts, etc.)
+    pathname === "/favicon.ico" ||
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml" ||
+    pathname === "/thanksgiving-rumble" ||
+    pathname.startsWith("/thanksgiving-rumble/")
   ) {
     return NextResponse.next();
   }
