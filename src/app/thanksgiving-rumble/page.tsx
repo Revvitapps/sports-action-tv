@@ -245,7 +245,7 @@ export default function ThanksgivingRumblePage() {
               </div>
               <h3 className="text-[clamp(2.2rem,3.2vw,3rem)] font-semibold drop-shadow-lg">Legacy race of the Rumble weekend.</h3>
               <p className="max-w-4xl text-base text-white/90">
-                Friday-night headline with ceremonial laps, Wayne's family on-site, and a field stacked with past champions. Tap below to read the full memorial story.
+                Friday-night headline with ceremonial laps, Wayne&apos;s family on-site, and a field stacked with past champions. Tap below to read the full memorial story.
               </p>
               <div className="grid w-full gap-3 text-sm text-white/90 md:grid-cols-3">
                 <span className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-center font-medium">
@@ -410,7 +410,7 @@ export default function ThanksgivingRumblePage() {
       <section id="stories" className="section-shell space-y-5">
         <Reveal className="space-y-3 text-white">
           <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Learn more</p>
-          <h2 className="text-3xl font-semibold">Learn more about this weekend's race and venue.</h2>
+          <h2 className="text-3xl font-semibold">Learn more about this weekend&apos;s race and venue.</h2>
           <p className="text-white/80">
             Tap to open the Rumble overview, Wayne Poole Memorial details, and Paradise Raceway background.
           </p>
