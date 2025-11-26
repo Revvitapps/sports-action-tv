@@ -1,6 +1,9 @@
+ "use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { brandAssets } from "@/lib/site";
+import { usePathname } from "next/navigation";
 
 const footerLinks = [
   {
@@ -30,6 +33,40 @@ const footerLinks = [
 ];
 
 export function SiteFooter() {
+  const pathname = usePathname();
+
+  if (pathname === "/thanksgiving-rumble") {
+    return (
+      <footer className="border-t border-white/10 bg-background/75 backdrop-blur">
+        <div className="section-shell flex items-center justify-center py-6">
+          <div className="flex w-full max-w-5xl items-center justify-center gap-4 rounded-full border border-white/20 bg-white/10 px-12 py-4 shadow-[0_12px_40px_rgba(0,0,0,0.35)]">
+            <span className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white p-1.5">
+              <Image
+                src={brandAssets.primaryLogo}
+                alt="SportsActionTV logo"
+                fill
+                sizes="48px"
+                className="object-contain"
+              />
+            </span>
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-white text-center">
+              Thanksgiving Rumble / Wayne Poole Memorial
+            </div>
+            <span className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white p-1.5">
+              <Image
+                src={brandAssets.primaryLogo}
+                alt="SportsActionTV logo"
+                fill
+                sizes="48px"
+                className="object-contain"
+              />
+            </span>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="border-t border-white/10 bg-background/60">
       <div className="section-shell grid gap-10 py-12 md:grid-cols-[1.2fr_2fr]">

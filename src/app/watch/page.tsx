@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Watch Live | SportsActionTV",
-  description: "Embedded Lightcast player for live races plus on-demand archives.",
+  description: "Embedded player for live races plus on-demand archives.",
 };
 
 const tabs = [
@@ -22,7 +22,7 @@ export default function WatchPage() {
         <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Watch live</p>
         <h1 className="text-3xl font-semibold text-white">Stream every lap with the SportsActionTV player.</h1>
         <p className="text-muted-foreground">
-          Redeem your subscribe code, press play, and broadcast to Roku, Fire TV, Apple TV, and mobile—all powered by Lightcast.
+          Redeem your subscribe code, press play, and broadcast to Roku, Fire TV, Apple TV, and mobile.
         </p>
       </Reveal>
       <Reveal className="grid gap-4 md:grid-cols-3">

@@ -47,7 +47,7 @@ const accessSteps = [
   {
     title: "Redeem & watch",
     detail:
-      "Drop the code below. Once verified, head to the Watch Live page where the Lightcast player is ready.",
+      "Drop the code below. Once verified, head to the Watch Live page where your player is ready.",
   },
 ];
 

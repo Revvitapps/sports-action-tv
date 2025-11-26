@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Reveal from "@/components/Reveal";
 import { brandAssets } from "@/lib/site";
 
@@ -16,6 +17,39 @@ const navItems = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  if (pathname === "/thanksgiving-rumble") {
+    return (
+      <header className="sticky top-0 z-40 border-b border-white/5 bg-background/75 backdrop-blur-xl">
+        <div className="section-shell flex items-center justify-center py-4">
+          <div className="flex w-full max-w-5xl items-center justify-center gap-4 rounded-full border border-white/20 bg-white/10 px-12 py-4 shadow-[0_12px_40px_rgba(0,0,0,0.35)]">
+            <span className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white p-1.5">
+              <Image
+                src={brandAssets.primaryLogo}
+                alt="SportsActionTV logo"
+                fill
+                sizes="48px"
+                className="object-contain"
+              />
+            </span>
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-white text-center">
+              Thanksgiving Rumble / Wayne Poole Memorial
+            </div>
+            <span className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white p-1.5">
+              <Image
+                src={brandAssets.primaryLogo}
+                alt="SportsActionTV logo"
+                fill
+                sizes="48px"
+                className="object-contain"
+              />
+            </span>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/5 bg-background/75 backdrop-blur-xl">
