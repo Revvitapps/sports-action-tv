@@ -374,36 +374,38 @@ export default function ThanksgivingRumblePage() {
             </Reveal>
           </section>
 
-          <Reveal id="platforms" className="rounded-[2rem] border border-white/10 bg-black/60 p-6">
-            <div className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Platforms</div>
-            <p className="mt-2 text-lg font-semibold text-white">Tap to TV or watch on the go.</p>
-            <p className="mt-2 text-sm text-white/80">
-              Roku, Fire TV, Apple TV, mobile apps, and web are all live - same pass, same player.
-            </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {streamingPlatforms.map((platform, idx) => (
-                <MotionDiv
-                  key={platform.name}
-                  delay={0.05 + idx * 0.04}
-                  className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/8 px-4 py-3"
-                >
-                  <Image
-                    src={platform.logo}
-                    alt={platform.name}
-                    width={platform.name === "Mobile Apps" ? 80 : 120}
-                    height={36}
-                    className="h-9 w-auto object-contain brightness-150"
-                  />
-                  <span className="text-xs uppercase tracking-[0.3em] text-white">{platform.name}</span>
-                </MotionDiv>
-              ))}
-            </div>
-            <Button asChild className="mt-5 w-full">
-              <Link href={subscriptionUrl} target="_blank" rel="noreferrer">
-                Subscribe to watch now
-              </Link>
-            </Button>
-          </Reveal>
+          <div id="platforms">
+            <Reveal className="rounded-[2rem] border border-white/10 bg-black/60 p-6">
+              <div className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Platforms</div>
+              <p className="mt-2 text-lg font-semibold text-white">Tap to TV or watch on the go.</p>
+              <p className="mt-2 text-sm text-white/80">
+                Roku, Fire TV, Apple TV, mobile apps, and web are all live - same pass, same player.
+              </p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {streamingPlatforms.map((platform, idx) => (
+                  <MotionDiv
+                    key={platform.name}
+                    delay={0.05 + idx * 0.04}
+                    className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/8 px-4 py-3"
+                  >
+                    <Image
+                      src={platform.logo}
+                      alt={platform.name}
+                      width={platform.name === "Mobile Apps" ? 80 : 120}
+                      height={36}
+                      className="h-9 w-auto object-contain brightness-150"
+                    />
+                    <span className="text-xs uppercase tracking-[0.3em] text-white">{platform.name}</span>
+                  </MotionDiv>
+                ))}
+              </div>
+              <Button asChild className="mt-5 w-full">
+                <Link href={subscriptionUrl} target="_blank" rel="noreferrer">
+                  Subscribe to watch now
+                </Link>
+              </Button>
+            </Reveal>
+          </div>
         </div>
       </section>
 
