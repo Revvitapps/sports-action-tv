@@ -36,11 +36,12 @@ export const metadata: Metadata = {
     images: [socialImage],
   },
   metadataBase: new URL("https://subscribe.sportsactiontv.com"),
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    viewportFit: "cover",
-  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
