@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Race Broadcast Player</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="player-shell">
+      <div class="player-container" data-race-player>
+        <video
+          class="main-video"
+          data-role="main-video"
+          playsinline
+          muted
+          preload="metadata"
+          poster=""
+        ></video>
+
+        <div class="ad-overlay hidden mode-pip" data-role="ad-overlay" aria-hidden="true">
+          <div class="ad-badge">Sponsored</div>
+          <div class="ad-container" data-role="ad-container">
+            <video class="ad-video" data-role="ad-video" playsinline muted></video>
+            <a class="ad-fallback hidden" data-role="ad-fallback" href="#" target="_blank" rel="noreferrer">
+              <span class="ad-fallback-title">YOUR BRAND HERE</span>
+              <span class="ad-fallback-subtitle">CONTACT US</span>
+            </a>
+          </div>
+        </div>
+
+        <button class="tap-to-play hidden" type="button" data-role="tap-to-play">Tap to Play</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="/player.js"></script>
+</body>
+</html>

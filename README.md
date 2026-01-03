@@ -1,45 +1,101 @@
-# SportsActionTV Subscribe PWA
+# Race Broadcast Player (Static)
 
-This repository captures the upfront planning work for the SportsActionTV subscribe initiative. The goal is to ship a standalone, Vercel-hosted PWA that replaces the current Lightcast subscribe experience and automates the full customer lifecycle—from purchase through retention campaigns.
+Production-ready static player that keeps the main race stream playing while running PiP or quarter-screen overlay ads via Google IMA.
 
-## Objectives
+## Files
+- `index.html`
+- `styles.css`
+- `player.js`
+- `RaceAdPlayer.tsx` (optional Next.js wrapper)
 
-- Deliver a Stripe-backed subscribe flow that issues single-use access codes per purchase and stores entitlement metadata for later auditing.
-- Replace manual customer data collection with a unified profile store (contact info, purchase history, churn signals).
-- Automate onboarding and win-back communications (email + potential SMS) triggered by lifecycle events.
-- Preserve parity with the existing Wix marketing site via CNAME routing while allowing the subscribe PWA to evolve independently.
+## Query Params
+- `src`: main stream URL
+- `type`: `hls` or `mp4` (optional; inferred from `.m3u8`)
+- `vast`: optional VAST tag URL to auto-trigger a PiP ad on load
 
-## Repository Layout
-
-- `docs/` — product requirements, architecture decisions, integration notes.
-- `data/site-crawl-initial/` — raw Screaming Frog exports used to understand the current Wix content footprint.
-- `src/` — Next.js 15 PWA leveraging the DiFiore starter (Tailwind 4, shadcn-style UI primitives, Reveal animations).
-  - `/` homepage: racing hero, event showcase, subscribe flow, lifecycle automation, pricing CTAs.
-  - `/watch`: Lightcast player embed with live/on-demand context cards.
-  - `/subscribe`: members area mock showing code redemption, pricing tiles, and entitlement cards.
-
-## Getting Started
-
+Example:
 ```
-npm install
-npm run dev
+https://YOUR.pages.dev/?src=https://example.com/stream.m3u8&type=hls
 ```
 
-The app ships with a marketing homepage, subscribe preview route (`/subscribe`), and reusable layout/CTA components. It reuses utilities/components lifted from the DiFiore project (button, card, Reveal) to accelerate delivery.
+## Operator API (Browser Console)
+```
+window.RacePlayer.play()
+window.RacePlayer.pause()
+window.RacePlayer.mute()
+window.RacePlayer.unmute()
+window.RacePlayer.triggerAd({
+  mode: 'pip' | 'quarter',
+  vastTagUrl: 'https://example.com/vast',
+  durationSec: 15,
+  clickThroughUrl: 'https://sportsactiontv.com'
+})
+window.RacePlayer.clearAd()
+window.RacePlayer.setSchedule([
+  { atSec: 60, mode: 'pip', vastTagUrl: 'https://example.com/vast', durationSec: 15 },
+  { atSec: 180, mode: 'quarter', vastTagUrl: 'https://example.com/vast', durationSec: 20 }
+])
+```
 
-## Current Data Drop
+Event hooks (console logging is default):
+```
+window.RacePlayer.on('onMainPlay', () => {})
+window.RacePlayer.on('onMainPause', () => {})
+window.RacePlayer.on('onMainError', (err) => {})
+window.RacePlayer.on('onAdRequest', (payload) => {})
+window.RacePlayer.on('onAdStart', () => {})
+window.RacePlayer.on('onAdComplete', () => {})
+window.RacePlayer.on('onAdError', (err) => {})
+window.RacePlayer.on('onAdClick', () => {})
+```
 
-The Screaming Frog crawl (see `data/site-crawl-initial`) covers page titles, metadata, structured data, performance hints, and more for `sportsactiontv.com`. Use it to:
+## Fallback Ad
+If no VAST tag is provided or an error occurs, a clickable placeholder panel appears:
+- “YOUR BRAND HERE”
+- “CONTACT US”
 
-1. Inventory event-detail URLs that must keep working once the subscribe experience is moved.
-2. Spot metadata or image issues that can inform content fixes before the PWA launch.
-3. Prioritize performance optimizations—`pagespeed_all.csv` is a quick win list.
+Defaults to `mailto:ads@sportsactiontv.com` or uses `clickThroughUrl` if provided.
 
-## Immediate Next Steps
+## Wix Embed Instructions
+Recommended iframe snippet:
+```
+<iframe
+  src="https://YOUR.pages.dev/?src=STREAM_URL&type=hls"
+  style="width:100%; aspect-ratio:16/9; border:0;"
+  allow="autoplay; encrypted-media; picture-in-picture"
+></iframe>
+```
 
-1. Finalize the feature cut for v1 (see `docs/project-overview.md`).
-2. Stand up a Next.js/Vercel scaffold with Stripe + Clerk/Supabase wiring.
-3. Map the data model for access codes + CRM handoff.
-4. Define automation flows (welcome, reminder, churn win-back) and select tooling.
+## postMessage Control (Optional)
+From the parent page:
+```
+iframeEl.contentWindow.postMessage({
+  type: 'RacePlayer',
+  action: 'triggerAd',
+  payload: { mode: 'pip', vastTagUrl: 'https://example.com/vast', durationSec: 15 }
+}, '*')
+```
+Supported actions: `play`, `pause`, `mute`, `unmute`, `triggerAd`, `clearAd`.
 
-Once the tech stack is locked, we will extend this repo with application code, infrastructure as code, and CI automation.
+## Cloudflare Pages Deployment (Static Upload)
+1. Build folder: this repo root containing `index.html`, `styles.css`, `player.js`.
+2. In Cloudflare Pages, create a new project and select “Direct Upload”.
+3. Upload the three static files.
+4. Use the generated `*.pages.dev` URL in your Wix iframe.
+
+## Local Testing
+1. Start a static server in the repo root:
+   - `npx serve .`
+   - or `python3 -m http.server 8080`
+2. Open `http://localhost:8080/?src=YOUR_STREAM_URL&type=hls`.
+
+## Notes
+- Main stream attempts autoplay muted; if blocked, a “Tap to Play” overlay appears.
+- IMA and hls.js load dynamically from CDNs.
+- Ads render inside the overlay container while the main video continues playing.
+
+## Next.js Wrapper (Optional)
+`RaceAdPlayer.tsx` expects `player.js` and `styles.css` to be served from `/public` in your Next.js app. Copy those files into `public/` and then render the component:
+```
+<RaceAdPlayer src=\"https://example.com/stream.m3u8\" type=\"hls\" vastTagUrl=\"https://example.com/vast\" />
+```
