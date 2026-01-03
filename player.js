@@ -12,6 +12,8 @@
     tapButton: null,
     splash: null,
     splashVideo: null,
+    splashComplete: false,
+    mainStarted: false,
     adsLoader: null,
     adsManager: null,
     adDisplayContainer: null,
@@ -314,7 +316,10 @@
 
     state.mainVideo.addEventListener("play", () => {
       emit("onMainPlay");
-      hideSplash();
+      state.mainStarted = true;
+      if (state.splashComplete) {
+        hideSplash();
+      }
       startScheduleWatcher();
     });
 
@@ -388,8 +393,35 @@
     if (state.splashVideo) {
       state.splashVideo.muted = true;
       state.splashVideo.play().catch(() => {});
+      setTimeout(() => {
+        if (!state.splashComplete) {
+          state.splashVideo.classList.add("hidden");
+          state.splashComplete = true;
+          if (state.mainStarted) {
+            hideSplash();
+          }
+        }
+      }, 4000);
       state.splashVideo.addEventListener("ended", () => {
         state.splashVideo.classList.add("hidden");
+        state.splashComplete = true;
+        if (state.mainStarted) {
+          hideSplash();
+        }
+      });
+      state.splashVideo.addEventListener("error", () => {
+        state.splashVideo.classList.add("hidden");
+        state.splashComplete = true;
+        if (state.mainStarted) {
+          hideSplash();
+        }
+      });
+      state.splash.addEventListener("click", () => {
+        state.splashVideo.classList.add("hidden");
+        state.splashComplete = true;
+        if (state.mainStarted) {
+          hideSplash();
+        }
       });
     }
 
