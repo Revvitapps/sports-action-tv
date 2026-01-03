@@ -102,6 +102,7 @@ body {
   padding: 4px 8px;
   border-radius: 999px;
   font-weight: 700;
+  cursor: grab;
 }
 
 .ad-container {
@@ -178,6 +179,7 @@ body {
   padding: 4px 8px;
   border-radius: 999px;
   font-weight: 700;
+  cursor: grab;
 }
 
 .view-container {
@@ -198,12 +200,12 @@ body {
 }
 
 .view-bottom-right {
-  bottom: 18px;
+  bottom: 72px;
   right: 18px;
 }
 
 .view-bottom-left {
-  bottom: 18px;
+  bottom: 72px;
   left: 18px;
 }
 
@@ -225,7 +227,7 @@ body {
 }
 
 .overlay-bottom-right {
-  bottom: 18px;
+  bottom: 72px;
   right: 18px;
 }
 
@@ -273,17 +275,17 @@ body {
 
   .overlay-bottom-right {
     right: 12px;
-    bottom: 12px;
+    bottom: 56px;
   }
 
   .view-bottom-right {
     right: 12px;
-    bottom: 12px;
+    bottom: 56px;
   }
 
   .view-bottom-left {
     left: 12px;
-    bottom: 12px;
+    bottom: 56px;
   }
 
   .view-top-right {

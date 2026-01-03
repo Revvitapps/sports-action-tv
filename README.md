@@ -43,6 +43,7 @@ window.RacePlayer.setAltView({
 window.RacePlayer.clearAltView()
 ```
 Alt view audio is always muted.
+Drag the "Sponsored" or "Cam 2" badge to reposition the overlay.
 
 Event hooks (console logging is default):
 ```

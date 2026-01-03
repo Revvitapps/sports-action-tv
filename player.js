@@ -4,6 +4,7 @@
   const HLS_SRC = "https://cdn.jsdelivr.net/npm/hls.js@1.5.15";
 
   const state = {
+    root: null,
     mainVideo: null,
     adVideo: null,
     adOverlay: null,
@@ -17,6 +18,8 @@
     viewOverlay: null,
     viewVideo: null,
     viewHls: null,
+    adDragHandle: null,
+    viewDragHandle: null,
     adsLoader: null,
     adsManager: null,
     adDisplayContainer: null,
@@ -72,6 +75,41 @@
     hls.loadSource(src);
     hls.attachMedia(video);
     return hls;
+  };
+
+  const enableDrag = (handle, overlay) => {
+    if (!handle || !overlay || !state.root) {
+      return;
+    }
+    handle.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      const containerRect = state.root.getBoundingClientRect();
+      const overlayRect = overlay.getBoundingClientRect();
+      const offsetX = event.clientX - overlayRect.left;
+      const offsetY = event.clientY - overlayRect.top;
+
+      overlay.style.left = `${overlayRect.left - containerRect.left}px`;
+      overlay.style.top = `${overlayRect.top - containerRect.top}px`;
+      overlay.style.right = "auto";
+      overlay.style.bottom = "auto";
+
+      const onMove = (moveEvent) => {
+        const nextLeft = moveEvent.clientX - containerRect.left - offsetX;
+        const nextTop = moveEvent.clientY - containerRect.top - offsetY;
+        const maxLeft = containerRect.width - overlayRect.width;
+        const maxTop = containerRect.height - overlayRect.height;
+        overlay.style.left = `${Math.max(0, Math.min(nextLeft, maxLeft))}px`;
+        overlay.style.top = `${Math.max(0, Math.min(nextTop, maxTop))}px`;
+      };
+
+      const onUp = () => {
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+      };
+
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+    });
   };
 
   const showTapOverlay = () => {
@@ -455,6 +493,7 @@
     if (!root) {
       return;
     }
+    state.root = root;
     state.mainVideo = root.querySelector("[data-role='main-video']");
     state.adVideo = root.querySelector("[data-role='ad-video']");
     state.adOverlay = root.querySelector("[data-role='ad-overlay']");
@@ -465,6 +504,8 @@
     state.splashVideo = root.querySelector("[data-role='splash-video']");
     state.viewOverlay = root.querySelector("[data-role='view-overlay']");
     state.viewVideo = root.querySelector("[data-role='view-video']");
+    state.adDragHandle = root.querySelector("[data-role='ad-drag']");
+    state.viewDragHandle = root.querySelector("[data-role='view-drag']");
 
     state.adVideo.muted = true;
     state.adVideo.volume = 0;
@@ -503,6 +544,9 @@
         }
       });
     }
+
+    enableDrag(state.adDragHandle, state.adOverlay);
+    enableDrag(state.viewDragHandle, state.viewOverlay);
 
     const params = new URLSearchParams(window.location.search);
     const mainSrc = options.mainSrc || params.get("src") || "";
