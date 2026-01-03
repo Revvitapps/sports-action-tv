@@ -91,8 +91,10 @@ Supported actions: `play`, `pause`, `mute`, `unmute`, `triggerAd`, `clearAd`.
 
 ## Notes
 - Main stream attempts autoplay muted; if blocked, a “Tap to Play” overlay appears.
+- Tap to Play also unmutes the main stream.
 - IMA and hls.js load dynamically from CDNs.
 - Ads render inside the overlay container while the main video continues playing.
+- Splash intro uses `/SportsActionCrash.mp4` and falls back to `/hero-image.png`.
 
 ## Next.js Wrapper (Optional)
 `RaceAdPlayer.tsx` expects `player.js` and `styles.css` to be served from `/public` in your Next.js app. Copy those files into `public/` and then render the component:

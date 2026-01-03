@@ -10,6 +10,8 @@
     adContainer: null,
     adFallback: null,
     tapButton: null,
+    splash: null,
+    splashVideo: null,
     adsLoader: null,
     adsManager: null,
     adDisplayContainer: null,
@@ -64,6 +66,20 @@
   const hideTapOverlay = () => {
     if (state.tapButton) {
       state.tapButton.classList.add("hidden");
+    }
+  };
+
+  const hideSplash = () => {
+    if (state.splash) {
+      state.splash.classList.add("hidden");
+      state.splash.setAttribute("aria-hidden", "true");
+    }
+  };
+
+  const showSplash = () => {
+    if (state.splash) {
+      state.splash.classList.remove("hidden");
+      state.splash.setAttribute("aria-hidden", "false");
     }
   };
 
@@ -298,11 +314,15 @@
 
     state.mainVideo.addEventListener("play", () => {
       emit("onMainPlay");
+      hideSplash();
       startScheduleWatcher();
     });
 
     state.mainVideo.addEventListener("pause", () => emit("onMainPause"));
-    state.mainVideo.addEventListener("error", (event) => emit("onMainError", event));
+    state.mainVideo.addEventListener("error", (event) => {
+      emit("onMainError", event);
+      showSplash();
+    });
 
     await attemptAutoplay();
   };
@@ -311,6 +331,8 @@
     const activate = () => {
       state.userActivated = true;
       hideTapOverlay();
+      state.mainVideo.muted = false;
+      state.mainVideo.volume = 1;
       if (state.adDisplayContainer) {
         state.adDisplayContainer.initialize();
       }
@@ -357,9 +379,19 @@
     state.adContainer = root.querySelector("[data-role='ad-container']");
     state.adFallback = root.querySelector("[data-role='ad-fallback']");
     state.tapButton = root.querySelector("[data-role='tap-to-play']");
+    state.splash = root.querySelector("[data-role='splash']");
+    state.splashVideo = root.querySelector("[data-role='splash-video']");
 
     state.adVideo.muted = true;
     state.adVideo.volume = 0;
+
+    if (state.splashVideo) {
+      state.splashVideo.muted = true;
+      state.splashVideo.play().catch(() => {});
+      state.splashVideo.addEventListener("ended", () => {
+        state.splashVideo.classList.add("hidden");
+      });
+    }
 
     const params = new URLSearchParams(window.location.search);
     const mainSrc = options.mainSrc || params.get("src") || "";
