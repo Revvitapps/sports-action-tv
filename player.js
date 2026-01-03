@@ -14,6 +14,9 @@
     splashVideo: null,
     splashComplete: false,
     mainStarted: false,
+    viewOverlay: null,
+    viewVideo: null,
+    viewHls: null,
     adsLoader: null,
     adsManager: null,
     adDisplayContainer: null,
@@ -59,6 +62,18 @@
       document.head.appendChild(script);
     });
 
+  const attachHls = async (video, src) => {
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = src;
+      return null;
+    }
+    await loadScript(HLS_SRC);
+    const hls = new Hls();
+    hls.loadSource(src);
+    hls.attachMedia(video);
+    return hls;
+  };
+
   const showTapOverlay = () => {
     if (state.tapButton) {
       state.tapButton.classList.remove("hidden");
@@ -90,6 +105,27 @@
     state.adOverlay.classList.add(mode === "quarter" ? "mode-quarter" : "mode-pip");
   };
 
+  const setViewPosition = (position) => {
+    if (!state.viewOverlay) {
+      return;
+    }
+    state.viewOverlay.classList.remove(
+      "view-bottom-right",
+      "view-bottom-left",
+      "view-top-right",
+      "view-top-left"
+    );
+    const posClass =
+      position === "bottom-left"
+        ? "view-bottom-left"
+        : position === "top-right"
+        ? "view-top-right"
+        : position === "top-left"
+        ? "view-top-left"
+        : "view-bottom-right";
+    state.viewOverlay.classList.add(posClass);
+  };
+
   const showOverlay = () => {
     state.adOverlay.classList.remove("hidden");
     state.adOverlay.setAttribute("aria-hidden", "false");
@@ -111,6 +147,22 @@
     if (state.adsManager) {
       state.adsManager.destroy();
       state.adsManager = null;
+    }
+  };
+
+  const clearAltView = () => {
+    if (state.viewHls) {
+      state.viewHls.destroy();
+      state.viewHls = null;
+    }
+    if (state.viewVideo) {
+      state.viewVideo.pause();
+      state.viewVideo.removeAttribute("src");
+      state.viewVideo.load();
+    }
+    if (state.viewOverlay) {
+      state.viewOverlay.classList.add("hidden");
+      state.viewOverlay.setAttribute("aria-hidden", "true");
     }
   };
 
@@ -252,6 +304,28 @@
     }
   };
 
+  const setAltView = async ({ src, type = "hls", position = "bottom-right" }) => {
+    if (!state.viewOverlay || !state.viewVideo) {
+      return;
+    }
+    clearAltView();
+    setViewPosition(position);
+    state.viewOverlay.classList.remove("hidden");
+    state.viewOverlay.setAttribute("aria-hidden", "false");
+    state.viewVideo.muted = true;
+    state.viewVideo.volume = 0;
+    try {
+      if (type === "hls" || src.endsWith(".m3u8")) {
+        state.viewHls = await attachHls(state.viewVideo, src);
+      } else {
+        state.viewVideo.src = src;
+      }
+      await state.viewVideo.play();
+    } catch (error) {
+      emit("onMainError", error);
+    }
+  };
+
   const triggerAd = ({ mode = "pip", vastTagUrl, durationSec = 15, clickThroughUrl }) => {
     clearAd();
     state.pendingAd = { mode, vastTagUrl, durationSec, clickThroughUrl };
@@ -342,6 +416,9 @@
         state.adDisplayContainer.initialize();
       }
       attemptAutoplay();
+      if (state.viewVideo && state.viewVideo.src) {
+        state.viewVideo.play().catch(() => {});
+      }
       if (state.pendingAd?.retry) {
         requestAd(state.pendingAd);
         state.pendingAd.retry = false;
@@ -386,6 +463,8 @@
     state.tapButton = root.querySelector("[data-role='tap-to-play']");
     state.splash = root.querySelector("[data-role='splash']");
     state.splashVideo = root.querySelector("[data-role='splash-video']");
+    state.viewOverlay = root.querySelector("[data-role='view-overlay']");
+    state.viewVideo = root.querySelector("[data-role='view-video']");
 
     state.adVideo.muted = true;
     state.adVideo.volume = 0;
@@ -451,6 +530,8 @@
     triggerAd,
     clearAd,
     setSchedule,
+    setAltView,
+    clearAltView,
     on,
   };
 

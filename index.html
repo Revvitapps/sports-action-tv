@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Race Broadcast Player</title>
-  <link rel="icon" href="/hero-image.png" type="image/png" />
-  <meta property="og:image" content="/hero-image.png" />
+  <link rel="icon" href="/public/hero-image.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/public/hero-image.png" />
+  <meta property="og:image" content="https://sports-action-tv.pages.dev/public/hero-image.png" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
@@ -19,7 +20,7 @@
           playsinline
           muted
           preload="metadata"
-          poster="/hero-image.png"
+          poster="/public/hero-image.png"
         ></video>
 
         <div class="splash" data-role="splash" aria-hidden="false">
@@ -30,12 +31,19 @@
             muted
             preload="auto"
           >
-            <source src="/SportsActionCrash.mp4" type="video/mp4" />
+            <source src="/public/SportsActionCrash.mp4" type="video/mp4" />
           </video>
-          <img class="splash-image" data-role="splash-image" src="/hero-image.png" alt="SportsActionTV" />
+          <img class="splash-image" data-role="splash-image" src="/public/hero-image.png" alt="SportsActionTV" />
         </div>
 
-        <div class="ad-overlay hidden mode-pip" data-role="ad-overlay" aria-hidden="true">
+        <div class="view-overlay hidden mode-pip view-bottom-right" data-role="view-overlay" aria-hidden="true">
+          <div class="view-badge">Cam 2</div>
+          <div class="view-container" data-role="view-container">
+            <video class="view-video" data-role="view-video" playsinline muted></video>
+          </div>
+        </div>
+
+        <div class="ad-overlay hidden mode-pip overlay-bottom-right" data-role="ad-overlay" aria-hidden="true">
           <div class="ad-badge">Sponsored</div>
           <div class="ad-container" data-role="ad-container">
             <video class="ad-video" data-role="ad-video" playsinline muted></video>

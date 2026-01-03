@@ -35,7 +35,14 @@ window.RacePlayer.setSchedule([
   { atSec: 60, mode: 'pip', vastTagUrl: 'https://example.com/vast', durationSec: 15 },
   { atSec: 180, mode: 'quarter', vastTagUrl: 'https://example.com/vast', durationSec: 20 }
 ])
+window.RacePlayer.setAltView({
+  src: 'https://example.com/cam2.m3u8',
+  type: 'hls',
+  position: 'bottom-right'
+})
+window.RacePlayer.clearAltView()
 ```
+Alt view audio is always muted.
 
 Event hooks (console logging is default):
 ```
@@ -94,7 +101,8 @@ Supported actions: `play`, `pause`, `mute`, `unmute`, `triggerAd`, `clearAd`.
 - Tap to Play also unmutes the main stream.
 - IMA and hls.js load dynamically from CDNs.
 - Ads render inside the overlay container while the main video continues playing.
-- Splash intro uses `/SportsActionCrash.mp4` and falls back to `/hero-image.png`.
+- Splash intro uses `/public/SportsActionCrash.mp4` and falls back to `/public/hero-image.png`.
+- og:image points at the Pages domain; update it when you move to a custom domain.
 
 ## Next.js Wrapper (Optional)
 `RaceAdPlayer.tsx` expects `player.js` and `styles.css` to be served from `/public` in your Next.js app. Copy those files into `public/` and then render the component:
