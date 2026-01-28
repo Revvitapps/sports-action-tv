@@ -3,6 +3,9 @@ import { useEffect, useRef } from "react";
 type RaceAdPlayerProps = {
   src: string;
   type?: "hls" | "mp4";
+  pipSrc?: string;
+  pipType?: "hls" | "mp4";
+  pipPosition?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
   vastTagUrl?: string;
   className?: string;
 };
@@ -14,6 +17,10 @@ declare global {
       mainType?: string;
       vastTagUrl?: string;
     }) => void;
+    RacePlayer?: {
+      setAltView?: (options: { src: string; type?: string; position?: string }) => void;
+      clearAltView?: () => void;
+    };
   }
 }
 
@@ -43,7 +50,15 @@ const ensureScript = () =>
     document.body.appendChild(script);
   });
 
-export default function RaceAdPlayer({ src, type = "hls", vastTagUrl, className }: RaceAdPlayerProps) {
+export default function RaceAdPlayer({
+  src,
+  type = "hls",
+  pipSrc,
+  pipType,
+  pipPosition = "bottom-right",
+  vastTagUrl,
+  className,
+}: RaceAdPlayerProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -57,11 +72,24 @@ export default function RaceAdPlayer({ src, type = "hls", vastTagUrl, className 
         if (!isMounted) {
           return;
         }
-        window.initRacePlayer?.(rootRef.current, {
+        const initPromise = window.initRacePlayer?.(rootRef.current, {
           mainSrc: src,
           mainType: type,
           vastTagUrl,
         });
+        Promise.resolve(initPromise)
+          .then(() => {
+            if (!isMounted || !pipSrc) {
+              return;
+            }
+            const resolvedType = pipType ?? (pipSrc.endsWith(".m3u8") ? "hls" : "mp4");
+            window.RacePlayer?.setAltView?.({
+              src: pipSrc,
+              type: resolvedType,
+              position: pipPosition,
+            });
+          })
+          .catch(() => {});
       })
       .catch((error) => {
         console.error("RaceAdPlayer init failed", error);
@@ -69,8 +97,9 @@ export default function RaceAdPlayer({ src, type = "hls", vastTagUrl, className 
 
     return () => {
       isMounted = false;
+      window.RacePlayer?.clearAltView?.();
     };
-  }, [src, type, vastTagUrl]);
+  }, [src, type, pipSrc, pipType, pipPosition, vastTagUrl]);
 
   return (
     <div className={className}>
@@ -82,6 +111,13 @@ export default function RaceAdPlayer({ src, type = "hls", vastTagUrl, className 
           muted
           preload="metadata"
         ></video>
+
+        <div className="view-overlay hidden mode-pip view-bottom-right" data-role="view-overlay" aria-hidden="true">
+          <div className="view-badge" data-role="view-drag">Cam 2</div>
+          <div className="view-container" data-role="view-container">
+            <video className="view-video" data-role="view-video" playsInline muted></video>
+          </div>
+        </div>
 
         <div className="ad-overlay hidden mode-pip" data-role="ad-overlay" aria-hidden="true">
           <div className="ad-badge">Sponsored</div>
