@@ -179,6 +179,16 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
                   Subscribe to watch now
                 </Link>
               </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full px-10 py-6 text-lg font-semibold"
+              >
+                <Link href="/thanksgiving-rumble?pip=1">
+                  Player preview
+                </Link>
+              </Button>
             </MotionDiv>
             <MotionDiv
               delay={0.3}
