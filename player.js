@@ -178,6 +178,9 @@
       return;
     }
     state.viewMinimized = !visible;
+    if (state.root) {
+      state.root.dataset.pipMinimized = String(state.viewMinimized);
+    }
     if (visible) {
       state.viewOverlay.classList.remove("hidden");
       state.viewOverlay.setAttribute("aria-hidden", "false");
@@ -232,6 +235,9 @@
       state.viewOverlay.setAttribute("aria-hidden", "true");
     }
     state.viewMinimized = false;
+    if (state.root) {
+      state.root.dataset.pipMinimized = "false";
+    }
   };
 
   const clearAd = () => {
@@ -303,6 +309,9 @@
             emit("onAdStart");
             state.adActive = true;
             updatePipToggleState();
+            if (state.viewMinimized) {
+              setViewVisible(true);
+            }
           });
           state.adsManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, () => {
             emit("onAdComplete");
@@ -326,6 +335,9 @@
             state.adsManager.start();
             state.adActive = true;
             updatePipToggleState();
+            if (state.viewMinimized) {
+              setViewVisible(true);
+            }
             state.adFallback.classList.add("hidden");
             showOverlay();
             clearAdTimer();
@@ -561,6 +573,7 @@
       return;
     }
     state.root = root;
+    state.root.dataset.pipMinimized = "false";
     state.mainVideo = root.querySelector("[data-role='main-video']");
     state.adVideo = root.querySelector("[data-role='ad-video']");
     state.adOverlay = root.querySelector("[data-role='ad-overlay']");

@@ -8,6 +8,7 @@ type PlayerControlsProps = {
   showCameras?: boolean;
   pipSrc?: string;
   pipType?: "hls" | "mp4";
+  className?: string;
 };
 
 const getPlayerRoot = () => document.querySelector("[data-race-player]") as HTMLElement | null;
@@ -16,6 +17,7 @@ export default function PlayerControls({
   showCameras = false,
   pipSrc,
   pipType,
+  className,
 }: PlayerControlsProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
@@ -76,7 +78,7 @@ export default function PlayerControls({
     return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
   }, []);
 
-  const hidden = !inView || isFullscreen;
+  const hidden = !inView && !isFullscreen;
   const controlLabel = useMemo(() => (isPlaying ? "Pause" : "Play"), [isPlaying]);
   const volumeBars = useMemo(() => {
     if (isMuted) {
@@ -128,13 +130,15 @@ export default function PlayerControls({
 
   const handleFullscreenToggle = () => {
     const root = getPlayerRoot();
-    if (!root) {
+    const wrapper = root?.closest("[data-player-shell]") as HTMLElement | null;
+    const target = wrapper || root;
+    if (!target) {
       return;
     }
     if (document.fullscreenElement) {
       document.exitFullscreen?.();
     } else {
-      root.requestFullscreen?.();
+      target.requestFullscreen?.();
     }
   };
 
@@ -153,12 +157,14 @@ export default function PlayerControls({
   return (
     <div
       className={cn(
-        "mt-5 flex flex-wrap items-center justify-center gap-3 transition-opacity",
+        "absolute bottom-3 left-1/2 z-10 flex flex-wrap items-center justify-center gap-2 rounded-full border border-white/10 bg-black/65 px-3 py-2 text-[11px] uppercase tracking-[0.24em] text-white/85 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur transition-opacity -translate-x-1/2",
         hidden && "pointer-events-none opacity-0"
+        ,
+        className
       )}
     >
       <>
-        <Button type="button" variant="secondary" onClick={handlePlayPause}>
+          <Button type="button" variant="secondary" onClick={handlePlayPause} className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]">
           <span className="flex items-center gap-2">
             {isPlaying ? (
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4 fill-current">
@@ -173,7 +179,7 @@ export default function PlayerControls({
             <span>{controlLabel}</span>
           </span>
         </Button>
-        <div className="flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-3 py-2">
+          <div className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5">
           <button
             type="button"
             className="text-white/90 hover:text-white"
@@ -209,23 +215,24 @@ export default function PlayerControls({
             })}
           </div>
         </div>
-        <Button type="button" variant="outline" onClick={handleFullscreenToggle}>
-          <span className="flex items-center gap-2">
-            <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4 fill-current">
-              <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-            </svg>
-            <span>{isFullscreen ? "Exit Fullscreen" : "Fullscreen"}</span>
-          </span>
-        </Button>
+          <Button type="button" variant="outline" onClick={handleFullscreenToggle} className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]">
+            <span className="flex items-center gap-2">
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4 fill-current">
+                <path d="M5 9V5h4M19 9V5h-4M5 15v4h4M19 15v4h-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+                <path d="M9 9l-4-4M15 9l4-4M9 15l-4 4M15 15l4 4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" fill="none" />
+              </svg>
+              <span>{isFullscreen ? "Exit Fullscreen" : "Fullscreen"}</span>
+            </span>
+          </Button>
         {showCameras && (
           <>
-            <Button type="button" variant="secondary" onClick={handleCamSelect} disabled={!pipSrc}>
+            <Button type="button" variant="secondary" onClick={handleCamSelect} disabled={!pipSrc} className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]">
               Driver Cam
             </Button>
-            <Button type="button" variant="secondary" onClick={handleCamSelect} disabled={!pipSrc}>
+            <Button type="button" variant="secondary" onClick={handleCamSelect} disabled={!pipSrc} className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]">
               Cam 1
             </Button>
-            <Button type="button" variant="secondary" onClick={handleCamSelect} disabled={!pipSrc}>
+            <Button type="button" variant="secondary" onClick={handleCamSelect} disabled={!pipSrc} className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]">
               Cam 2
             </Button>
           </>
