@@ -16,7 +16,7 @@ export default function InlinePlayer() {
         pipType="mp4"
         className="player-shell mx-auto"
       />
-      <PlayerControls showCameras />
+      <PlayerControls showCameras pipSrc={PIP_SRC} pipType="mp4" />
     </div>
   );
 }

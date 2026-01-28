@@ -129,6 +129,18 @@ export default function RaceAdPlayer({
           <div className="view-container" data-role="view-container">
             <video className="view-video" data-role="view-video" playsInline muted></video>
           </div>
+          <button
+            className="pip-toggle"
+            type="button"
+            data-role="pip-toggle"
+            aria-label="Minimize picture-in-picture"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="pip-toggle-icon">
+              <path d="M7 7h10v10H7z" fill="none" stroke="currentColor" strokeWidth="1.6" />
+              <path d="M9 15l6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              <path d="M11 9h4v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+          </button>
         </div>
 
         <div className="ad-overlay hidden mode-pip" data-role="ad-overlay" aria-hidden="true">

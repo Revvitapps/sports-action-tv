@@ -20,6 +20,8 @@
     viewHls: null,
     adDragHandle: null,
     viewDragHandle: null,
+    pipToggle: null,
+    viewMinimized: false,
     adsLoader: null,
     adsManager: null,
     adDisplayContainer: null,
@@ -164,6 +166,33 @@
     state.viewOverlay.classList.add(posClass);
   };
 
+  const updatePipToggleState = () => {
+    if (!state.pipToggle) {
+      return;
+    }
+    state.pipToggle.disabled = Boolean(state.adActive);
+  };
+
+  const setViewVisible = (visible) => {
+    if (!state.viewOverlay) {
+      return;
+    }
+    state.viewMinimized = !visible;
+    if (visible) {
+      state.viewOverlay.classList.remove("hidden");
+      state.viewOverlay.setAttribute("aria-hidden", "false");
+      if (state.viewVideo && state.viewVideo.src) {
+        state.viewVideo.play().catch(() => {});
+      }
+    } else {
+      state.viewOverlay.classList.add("hidden");
+      state.viewOverlay.setAttribute("aria-hidden", "true");
+      if (state.viewVideo) {
+        state.viewVideo.pause();
+      }
+    }
+  };
+
   const showOverlay = () => {
     state.adOverlay.classList.remove("hidden");
     state.adOverlay.setAttribute("aria-hidden", "false");
@@ -202,10 +231,12 @@
       state.viewOverlay.classList.add("hidden");
       state.viewOverlay.setAttribute("aria-hidden", "true");
     }
+    state.viewMinimized = false;
   };
 
   const clearAd = () => {
     state.adActive = false;
+    updatePipToggleState();
     clearAdTimer();
     clearAdsManager();
     if (state.adVideo) {
@@ -222,6 +253,7 @@
   const showFallback = ({ clickThroughUrl, durationSec }) => {
     clearAdsManager();
     state.adActive = true;
+    updatePipToggleState();
     setOverlayMode(state.pendingAd?.mode || "pip");
     showOverlay();
     if (state.adFallback) {
@@ -269,6 +301,8 @@
           );
           state.adsManager.addEventListener(google.ima.AdEvent.Type.STARTED, () => {
             emit("onAdStart");
+            state.adActive = true;
+            updatePipToggleState();
           });
           state.adsManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, () => {
             emit("onAdComplete");
@@ -291,6 +325,7 @@
             state.adsManager.setVolume(0);
             state.adsManager.start();
             state.adActive = true;
+            updatePipToggleState();
             state.adFallback.classList.add("hidden");
             showOverlay();
             clearAdTimer();
@@ -348,8 +383,7 @@
     }
     clearAltView();
     setViewPosition(position);
-    state.viewOverlay.classList.remove("hidden");
-    state.viewOverlay.setAttribute("aria-hidden", "false");
+    setViewVisible(true);
     state.viewVideo.muted = true;
     state.viewVideo.volume = 0;
     try {
@@ -537,6 +571,7 @@
     state.splashVideo = root.querySelector("[data-role='splash-video']");
     state.viewOverlay = root.querySelector("[data-role='view-overlay']");
     state.viewVideo = root.querySelector("[data-role='view-video']");
+    state.pipToggle = root.querySelector("[data-role='pip-toggle']");
     state.adDragHandle = root.querySelector("[data-role='ad-drag']");
     state.viewDragHandle = root.querySelector("[data-role='view-drag']");
 
@@ -567,6 +602,17 @@
 
     enableDrag(state.adDragHandle, state.adOverlay);
     enableDrag(state.viewDragHandle, state.viewOverlay);
+    updatePipToggleState();
+
+    if (state.pipToggle) {
+      state.pipToggle.addEventListener("click", () => {
+        if (state.adActive) {
+          return;
+        }
+        const isHidden = state.viewOverlay?.classList.contains("hidden");
+        setViewVisible(Boolean(isHidden));
+      });
+    }
 
     const params = new URLSearchParams(window.location.search);
     const mainSrc = options.mainSrc || params.get("src") || "";
