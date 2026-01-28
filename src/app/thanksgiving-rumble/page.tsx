@@ -6,6 +6,7 @@ import { MotionDiv } from "@/components/MotionDiv";
 import { Button } from "@/components/ui/button";
 import { brandAssets, streamingPlatforms } from "@/lib/site";
 import PipPreview from "./PipPreview";
+import InlinePlayer from "./InlinePlayer";
 
 type PageProps = {
   searchParams?: Record<string, string | string[] | undefined>;
@@ -245,6 +246,17 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="section-shell space-y-6">
+        <div className="text-center space-y-2 text-white">
+          <p className="text-xs uppercase tracking-[0.35em] text-white/60">Player preview</p>
+          <h2 className="text-2xl font-semibold md:text-3xl">Live player embed</h2>
+          <p className="text-sm text-white/70">
+            This inline player is live for deliverability checks.
+          </p>
+        </div>
+        <InlinePlayer />
       </section>
 
       <section className="space-y-8 px-0">
