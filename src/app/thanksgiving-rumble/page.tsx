@@ -5,6 +5,20 @@ import Reveal from "@/components/Reveal";
 import { MotionDiv } from "@/components/MotionDiv";
 import { Button } from "@/components/ui/button";
 import { brandAssets, streamingPlatforms } from "@/lib/site";
+import PipPreview from "./PipPreview";
+
+type PageProps = {
+  searchParams?: Record<string, string | string[] | undefined>;
+};
+
+const resolveParam = (value?: string | string[]) => (Array.isArray(value) ? value[0] : value);
+
+const resolveType = (src: string, typeParam?: string) => {
+  if (typeParam === "hls" || typeParam === "mp4") {
+    return typeParam;
+  }
+  return src.endsWith(".m3u8") ? "hls" : "mp4";
+};
 
 const subscriptionUrl = "https://sportsactiontv.lightcast.com/#subscription_products";
 
@@ -111,7 +125,30 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ThanksgivingRumblePage() {
+export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
+  const pipParam = resolveParam(searchParams?.pip);
+  const modeParam = resolveParam(searchParams?.mode);
+  const pipToggle = pipParam === "1" || pipParam === "true";
+  const showPip = pipToggle || pipParam !== undefined || modeParam === "pip";
+
+  if (showPip) {
+    const src = resolveParam(searchParams?.src) ?? "/player-main.mp4";
+    const pipSrc = (!pipToggle && pipParam) || resolveParam(searchParams?.pipSrc) || "/player-pip.mp4";
+    const type = resolveType(src, resolveParam(searchParams?.type));
+    const pipType = resolveType(pipSrc, resolveParam(searchParams?.pipType));
+    const vastTagUrl = resolveParam(searchParams?.vast) || undefined;
+
+    return (
+      <PipPreview
+        src={src}
+        type={type}
+        pipSrc={pipSrc}
+        pipType={pipType}
+        vastTagUrl={vastTagUrl}
+      />
+    );
+  }
+
   return (
     <div className="w-full space-y-16 pb-8">
       <section className="relative w-full min-h-[100svh] overflow-hidden px-0 pt-20 pb-16">
