@@ -126,7 +126,6 @@ export default function RaceAdPlayer({
         </div>
 
         <div className="view-overlay hidden mode-pip view-bottom-right" data-role="view-overlay" aria-hidden="true">
-          <div className="view-badge" data-role="view-drag">Cam 2</div>
           <div className="view-container" data-role="view-container">
             <video className="view-video" data-role="view-video" playsInline muted></video>
           </div>
