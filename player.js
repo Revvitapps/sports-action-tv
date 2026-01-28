@@ -633,6 +633,8 @@
       options.mainType ||
       params.get("type") ||
       (mainSrc.endsWith(".m3u8") ? "hls" : "mp4");
+    const pipSrc = options.pipSrc || params.get("pip") || params.get("pipSrc") || "";
+    const pipType = options.pipType || params.get("pipType") || (pipSrc.endsWith(".m3u8") ? "hls" : "mp4");
     const defaultVast = options.vastTagUrl || params.get("vast") || "";
 
     if (defaultVast) {
@@ -642,6 +644,10 @@
     attachUserActivation();
     initPostMessage();
     await setupMainVideo(mainSrc, mainType);
+
+    if (pipSrc) {
+      setAltView({ src: pipSrc, type: pipType, position: "bottom-right" });
+    }
   };
 
   window.initRacePlayer = initRacePlayer;

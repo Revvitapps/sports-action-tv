@@ -11,7 +11,10 @@ type PlayerControlsProps = {
   className?: string;
 };
 
-const getPlayerRoot = () => document.querySelector("[data-race-player]") as HTMLElement | null;
+const getPlayerRoot = (scope?: HTMLElement | null) => {
+  const root = scope?.querySelector?.("[data-race-player]") as HTMLElement | null;
+  return root ?? (document.querySelector("[data-race-player]") as HTMLElement | null);
+};
 
 export default function PlayerControls({
   showCameras = false,
@@ -27,7 +30,8 @@ export default function PlayerControls({
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
-    const root = getPlayerRoot();
+    const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
+    const root = getPlayerRoot(host);
     if (!root) {
       return;
     }
@@ -55,7 +59,8 @@ export default function PlayerControls({
   }, []);
 
   useEffect(() => {
-    const root = getPlayerRoot();
+    const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
+    const root = getPlayerRoot(host);
     if (!root) {
       return;
     }
@@ -79,6 +84,40 @@ export default function PlayerControls({
   }, []);
 
   const hidden = !inView && !isFullscreen;
+  const [controlsVisible, setControlsVisible] = useState(true);
+  const hideTimerRef = useRef<number | null>(null);
+
+  const bumpControls = () => {
+    setControlsVisible(true);
+    if (hideTimerRef.current) {
+      window.clearTimeout(hideTimerRef.current);
+    }
+    hideTimerRef.current = window.setTimeout(() => {
+      setControlsVisible(false);
+    }, 2500);
+  };
+
+  useEffect(() => {
+    bumpControls();
+    const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
+    const target = host ?? document;
+    const handleActivity = () => bumpControls();
+    target.addEventListener("mousemove", handleActivity);
+    target.addEventListener("touchstart", handleActivity, { passive: true });
+    target.addEventListener("touchmove", handleActivity, { passive: true });
+    target.addEventListener("wheel", handleActivity, { passive: true });
+    target.addEventListener("keydown", handleActivity);
+    return () => {
+      target.removeEventListener("mousemove", handleActivity);
+      target.removeEventListener("touchstart", handleActivity);
+      target.removeEventListener("touchmove", handleActivity);
+      target.removeEventListener("wheel", handleActivity);
+      target.removeEventListener("keydown", handleActivity);
+      if (hideTimerRef.current) {
+        window.clearTimeout(hideTimerRef.current);
+      }
+    };
+  }, []);
   const controlLabel = useMemo(() => (isPlaying ? "Pause" : "Play"), [isPlaying]);
   const volumeBars = useMemo(() => {
     if (isMuted) {
@@ -96,7 +135,8 @@ export default function PlayerControls({
   };
 
   const handleMuteToggle = () => {
-    const root = getPlayerRoot();
+    const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
+    const root = getPlayerRoot(host);
     const video = root?.querySelector("[data-role='main-video']") as HTMLVideoElement | null;
     if (!video) {
       return;
@@ -115,7 +155,8 @@ export default function PlayerControls({
   };
 
   const handleVolumeLevel = (level: number) => {
-    const root = getPlayerRoot();
+    const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
+    const root = getPlayerRoot(host);
     const video = root?.querySelector("[data-role='main-video']") as HTMLVideoElement | null;
     if (!video) {
       return;
@@ -129,7 +170,8 @@ export default function PlayerControls({
   };
 
   const handleFullscreenToggle = () => {
-    const root = getPlayerRoot();
+    const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
+    const root = getPlayerRoot(host);
     const wrapper = root?.closest("[data-player-shell]") as HTMLElement | null;
     const target = wrapper || root;
     if (!target) {
@@ -158,8 +200,8 @@ export default function PlayerControls({
     <div
       className={cn(
         "absolute bottom-3 left-1/2 z-10 flex flex-wrap items-center justify-center gap-2 rounded-full border border-white/10 bg-black/65 px-3 py-2 text-[11px] uppercase tracking-[0.24em] text-white/85 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur transition-opacity -translate-x-1/2",
-        hidden && "pointer-events-none opacity-0"
-        ,
+        hidden && "pointer-events-none opacity-0",
+        !controlsVisible && "opacity-0 pointer-events-none",
         className
       )}
     >

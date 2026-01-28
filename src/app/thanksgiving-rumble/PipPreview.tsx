@@ -22,12 +22,10 @@ export default function PipPreview({ src, type, pipSrc, pipType, vastTagUrl }: P
             Lightweight player endpoint for email deliverability testing.
           </p>
         </div>
-        <div className="relative" data-player-shell>
+        <div className="relative" data-player-shell data-player-root>
           <RaceAdPlayer
             src={src}
             type={type}
-            pipSrc={pipSrc}
-            pipType={pipType}
             vastTagUrl={vastTagUrl}
             className="player-shell"
           />

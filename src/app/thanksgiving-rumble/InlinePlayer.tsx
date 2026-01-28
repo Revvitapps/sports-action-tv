@@ -8,12 +8,10 @@ const PIP_SRC = "/player-pip.mp4";
 
 export default function InlinePlayer() {
   return (
-    <div className="relative w-full" data-player-shell>
+    <div className="relative w-full" data-player-shell data-player-root>
       <RaceAdPlayer
         src={MAIN_SRC}
         type="mp4"
-        pipSrc={PIP_SRC}
-        pipType="mp4"
         className="player-shell mx-auto"
       />
       <PlayerControls showCameras pipSrc={PIP_SRC} pipType="mp4" />

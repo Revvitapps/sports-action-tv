@@ -15,6 +15,8 @@ declare global {
     initRacePlayer?: (root: HTMLElement | null, options?: {
       mainSrc?: string;
       mainType?: string;
+      pipSrc?: string;
+      pipType?: string;
       vastTagUrl?: string;
     }) => void;
     RacePlayer?: {
@@ -79,6 +81,8 @@ export default function RaceAdPlayer({
         const initPromise = window.initRacePlayer?.(rootRef.current, {
           mainSrc: src,
           mainType: type,
+          pipSrc,
+          pipType,
           vastTagUrl,
         });
         Promise.resolve(initPromise)
@@ -86,12 +90,6 @@ export default function RaceAdPlayer({
             if (!isMounted || !pipSrc) {
               return;
             }
-            const resolvedType = pipType ?? (pipSrc.endsWith(".m3u8") ? "hls" : "mp4");
-            window.RacePlayer?.setAltView?.({
-              src: pipSrc,
-              type: resolvedType,
-              position: pipPosition,
-            });
           })
           .catch(() => {});
       })
