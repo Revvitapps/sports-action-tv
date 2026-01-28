@@ -458,6 +458,9 @@
       if (state.splashComplete) {
         hideSplash();
       }
+      if (state.viewVideo && state.viewVideo.src) {
+        state.viewVideo.play().catch(() => {});
+      }
       startScheduleWatcher();
     });
 
@@ -484,9 +487,6 @@
         state.adDisplayContainer.initialize();
       }
       playPrerollThenMain();
-      if (state.viewVideo && state.viewVideo.src) {
-        state.viewVideo.play().catch(() => {});
-      }
       if (state.pendingAd?.retry) {
         requestAd(state.pendingAd);
         state.pendingAd.retry = false;

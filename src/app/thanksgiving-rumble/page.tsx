@@ -37,10 +37,10 @@ const highlightStats = [
     image: brandAssets.kartRacer,
   },
   {
-    label: "Headliner",
-    value: "Wayne Poole Memorial",
-    detail: "51-lap tribute race; payouts have climbed into the $20,092-to-win range for the 20th anniversary.",
-    image: "/wp-memorial.jpg",
+    label: "Feature",
+    value: "Championship main event",
+    detail: "Full-field showdown with stacked grids and high-banked action.",
+    image: brandAssets.cameraRig,
   },
   {
     label: "Access",
@@ -52,34 +52,22 @@ const highlightStats = [
 
 const storySections = [
   {
-    title: "Experience the Thrill of Racing: Festival-Style Fall Weekend",
+    title: "Experience the Thrill of Racing: Festival-Style Weekend",
     summary:
-      "Paradise Raceway's Experience the Thrill of Racing is now a national fall marquee, part of the WKA Dirt Series Triple Crown with six-figure purses and festival energy.",
+      "A two-night karting showcase at Paradise Raceway with stacked grids, fan fest energy, and nonstop action.",
     body: [
-      "Born in the mid-2010s as a Thanksgiving weekend destination, the Rumble quickly grew from a regional race into a national draw with two packed days of youth, amateur, and pro shootouts. Paradise's high-banked red clay, 180+ pit sheds, and family-friendly setup turned it into a holiday tradition.",
-      "Big-money eras and WKA Triple Crown status cemented its stature: the 2021 weekend hit a ~$220K purse and introduced broad live streaming; 2022 brought spec Reaper tires to level the field; 2023 saw record crowds and Austin Banker reclaim the Wayne Poole Memorial; 2024 (10th anniversary) delivered Cameron Carter's last-lap Memorial win alongside fireworks, fan fest, parachute team drop-ins, and a two-day festival slate.",
-      "The modern Rumble blends championship-caliber racing with full-festival vibes: multi-cam streaming, fireworks, live music, fan fest, and wristbanded entry so fans and teams can move easily between pits and grandstands while catching every class and replay.",
+      "Built around high-banked clay and full fields, the weekend brings youth, amateur, and pro shootouts into one packed program.",
+      "Expect fireworks, fan fest moments, and multi-cam coverage that keeps every lap in view.",
+      "From qualifying to finales, the focus stays on speed, rivalries, and race-night atmosphere.",
     ],
   },
   {
-    title: "Wayne Poole Memorial: The Crown-Jewel Karting Tribute",
-    summary:
-      "Karting's most coveted memorial race, honoring #92 Wayne Poole with a 50+ lap showdown now hosted at Paradise.",
-    image: "/wayne-poole.png",
-    body: [
-      "Founded in 2005 after Wayne's passing, the Wayne Poole Memorial race has grown into a career-making win. It ran for years at Georgia Thanksgiving Thunder before moving permanently to Paradise Raceway in 2021 as the Friday-night headliner of the Experience the Thrill of Racing.",
-      "The race format leans into Wayne's number: 50+ laps (51 for the 2025 milestone) and payouts that always end in 92. Early years paid $5,092-to-win, later seasons jumped to $10,092, and the 2025 anniversary lands at $20,092-to-win.",
-      "Past champions read like a hall of fame: Austin Banker (2017, 2023), Jesse Riggins (2021), Shay Chavous (2022), and Cameron Carter's 2024 last-lap thriller after five attempts. Winning it is a career-defining moment because the field is stacked and the distance is grueling.",
-      "The 2025 program adds a Champions-of-Champions shootout plus family tributes at Paradise. Expect Wayne's family on-site, ceremonial laps, and a packed crowd tuned in on SportsActionTV for the memorial that blends emotion, prestige, and flat-out speed.",
-    ],
-  },
-  {
-    title: "Paradise Raceway: Experience the Thrill of Racing Home Track",
+    title: "Paradise Raceway: Home Track for the Weekend",
     summary:
       "South Carolina's karting showplace with a well-groomed dirt oval, fan-first amenities, and family-friendly vibes.",
     body: [
       "Opened in the early 2010s by Henry Moree, the 95/38 Paradise Raceway pairs a red clay surface with modern touches - 180 covered pit sheds, raised spectator walkways, a playground, a small lake, and alcohol-free grounds.",
-      "Amenities keep scaling: a VIP lounge, tiled restrooms, safety barrier upgrades, and plans for more VIP suites plus a NASCAR-style scoreboard. The track runs programs on the 2nd and 4th weekends monthly and anchors four marquee events each year, including the Experience the Thrill of Racing and Wayne Poole Memorial.",
+      "Amenities keep scaling: a VIP lounge, tiled restrooms, safety barrier upgrades, and plans for more VIP suites plus a NASCAR-style scoreboard. The track runs programs on the 2nd and 4th weekends monthly and anchors several marquee events each year.",
     ],
   },
 ];
@@ -99,13 +87,13 @@ const highlightVideos = [
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://watch.sportsactiontv.com"),
-  title: "Experience the Thrill of Racing Weekend | SportsActionTV",
+  title: "Experience the Thrill of Racing | SportsActionTV",
   description:
-    "Stream the Experience the Thrill of Racing and Wayne Poole Memorial live from Paradise Raceway. Full-weekend coverage on Roku, Fire TV, Apple TV, mobile, and web.",
+    "Stream Experience the Thrill of Racing live from Paradise Raceway. Full-weekend coverage on Roku, Fire TV, Apple TV, mobile, and web.",
   openGraph: {
-    title: "Experience the Thrill of Racing + Wayne Poole Memorial | SportsActionTV",
+    title: "Experience the Thrill of Racing | SportsActionTV",
     description:
-      "Watch the Experience the Thrill of Racing and Wayne Poole Memorial live from Paradise Raceway. Full-weekend coverage with replays, multi-cam, and TV apps.",
+      "Watch Experience the Thrill of Racing live from Paradise Raceway. Full-weekend coverage with replays, multi-cam, and TV apps.",
     url: "https://watch.sportsactiontv.com/thanksgiving-rumble",
     type: "website",
     images: [
@@ -119,9 +107,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Experience the Thrill of Racing + Wayne Poole Memorial | SportsActionTV",
+    title: "Experience the Thrill of Racing | SportsActionTV",
     description:
-      "Live coverage of the Experience the Thrill of Racing and Wayne Poole Memorial from Paradise Raceway with full replay access.",
+      "Live coverage of Experience the Thrill of Racing from Paradise Raceway with full replay access.",
     images: ["https://watch.sportsactiontv.com/hero-image.png"],
   },
 };
@@ -157,17 +145,17 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
         <div className="section-shell relative flex h-full flex-col items-center gap-14 text-center">
           <Reveal className="space-y-5 text-white">
             <MotionDiv delay={0.05} className="text-xs uppercase tracking-[0.45em] text-white/75">
-              Thanksgiving weekend - Paradise Raceway
+              Paradise Raceway • Live
             </MotionDiv>
             <MotionDiv delay={0.12}>
               <h1 className="text-4xl font-semibold leading-tight md:text-5xl">
-                Experience the Thrill of Racing + Wayne Poole Memorial
+                Experience the Thrill of Racing
               </h1>
             </MotionDiv>
             <MotionDiv delay={0.18}>
               <p className="max-w-4xl text-white/85">
                 Two nights of high-banked karting from Sellers, SC - streamed live on SportsActionTV. Grab a monthly pass,
-                send it to the big screen, and catch every lap, memorial ceremony, and fireworks show.
+                send it to the big screen, and catch every lap and fireworks show.
               </p>
             </MotionDiv>
             <MotionDiv delay={0.24} className="flex flex-wrap items-center justify-center gap-4">
@@ -226,7 +214,7 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
                     fill
                     sizes="(max-width: 768px) 100vw, 1200px"
                     className={`object-cover ${
-                      stat.label === "Headliner"
+                      stat.label === "Feature"
                         ? "object-[50%_35%] scale-[1.05]"
                         : stat.label === "Venue"
                           ? "object-[50%_60%] scale-[0.95] brightness-[1.08]"
@@ -285,8 +273,8 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
           <Reveal className="group relative overflow-hidden rounded-[2.5rem] border border-white/12 bg-black/70 shadow-[0_30px_90px_rgba(0,0,0,0.5)] transition duration-500 hover:-translate-y-1">
             <div className="absolute inset-0">
               <Image
-                src="/cart-racer.png"
-                alt="Wayne Poole Memorial"
+                src="/paradise-raceway-night.jpeg"
+                alt="Feature race night"
                 fill
                 sizes="100vw"
                 className="object-cover object-[50%_35%] brightness-[1.2] transition duration-500 group-hover:scale-[1.03]"
@@ -296,33 +284,33 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
             <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-6 py-14 text-center text-white sm:px-10 lg:px-16">
               <div className="flex flex-wrap items-center justify-center gap-3 text-black">
                 <span className="rounded-full bg-yellow-300/90 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em]">
-                  Wayne Poole Memorial
+                  Featured main event
                 </span>
                 <span className="rounded-full bg-yellow-300/90 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em]">
-                  51 laps
+                  Two-night card
                 </span>
                 <span className="rounded-full bg-yellow-300/90 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em]">
-                  $20,092-to-win
+                  Live + replay
                 </span>
               </div>
-              <h3 className="text-[clamp(2.2rem,3.2vw,3rem)] font-semibold drop-shadow-lg">Legacy race of the Rumble weekend.</h3>
+              <h3 className="text-[clamp(2.2rem,3.2vw,3rem)] font-semibold drop-shadow-lg">Prime-time racing, wall-to-wall.</h3>
               <p className="max-w-4xl text-base text-white/90">
-                Friday-night headline with ceremonial laps, Wayne&apos;s family on-site, and a field stacked with past champions. Tap below to read the full memorial story.
+                Expect stacked grids, fan fest energy, and a headline main event under the lights. Tap below for the full weekend overview.
               </p>
               <div className="grid w-full gap-3 text-sm text-white/90 md:grid-cols-3">
                 <span className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-center font-medium">
-                  Champions of Champions shootout
+                  Full-field finals
                 </span>
                 <span className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-center font-medium">
-                  51 laps - $20,092 purse
+                  Multi-cam coverage
                 </span>
                 <span className="rounded-full border border-white/30 bg-white/15 px-4 py-2 text-center font-medium">
-                  Career-defining winners
+                  Replay ready
                 </span>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Button asChild size="lg">
-                  <Link href="#stories">Read the memorial story</Link>
+                  <Link href="#stories">Explore event details</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline">
                   <Link href={subscriptionUrl} target="_blank" rel="noreferrer">
@@ -476,16 +464,16 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
           <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Learn more</p>
           <h2 className="text-3xl font-semibold">Learn more about this weekend&apos;s race and venue.</h2>
           <p className="text-white/80">
-            Tap to open the Rumble overview, Wayne Poole Memorial details, and Paradise Raceway background.
+            Tap to open the event overview and Paradise Raceway background.
           </p>
         </Reveal>
         <div className="grid gap-4">
-          {storySections.map((section) => (
+          {storySections.map((section, index) => (
             <Reveal
               key={section.title}
               className="overflow-hidden rounded-[1.75rem] border border-white/12 bg-black/65 shadow-[0_20px_65px_rgba(0,0,0,0.4)]"
             >
-              <details className="group" open={section.title.includes("Wayne Poole Memorial")}>
+              <details className="group" open={index === 0}>
                 <summary className="flex cursor-pointer flex-col gap-4 px-6 py-5 text-left text-white sm:flex-row sm:items-start sm:justify-between [&::-webkit-details-marker]:hidden">
                   <div className="space-y-2 sm:max-w-3xl">
                     <div className="text-xs uppercase tracking-[0.35em] text-primary/80">See more</div>
@@ -512,7 +500,7 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
           <div className="relative flex flex-col gap-6 text-white lg:flex-row lg:items-center lg:justify-between">
             <div className="space-y-4 lg:max-w-2xl">
               <p className="text-xs uppercase tracking-[0.4em] text-white/70">Ready to watch?</p>
-              <h3 className="text-3xl font-semibold">Grab the monthly pass and lock in the Rumble weekend.</h3>
+              <h3 className="text-3xl font-semibold">Grab the monthly pass and lock in the weekend.</h3>
               <p className="text-white/80">
                 The CTAs above all drive to our subscription products. Keep this block live through the weekend so viewers always have a direct path back to the checkout and player.
               </p>
