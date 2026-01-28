@@ -112,6 +112,19 @@ export default function RaceAdPlayer({
           preload="metadata"
         ></video>
 
+        <div className="splash" data-role="splash" aria-hidden="false">
+          <video
+            className="splash-video"
+            data-role="splash-video"
+            playsInline
+            muted
+            preload="auto"
+          >
+            <source src="/SportsActionCrash.mp4" type="video/mp4" />
+          </video>
+          <img className="splash-image" data-role="splash-image" src="/hero-image.png" alt="SportsActionTV" />
+        </div>
+
         <div className="view-overlay hidden mode-pip view-bottom-right" data-role="view-overlay" aria-hidden="true">
           <div className="view-badge" data-role="view-drag">Cam 2</div>
           <div className="view-container" data-role="view-container">

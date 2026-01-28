@@ -404,11 +404,37 @@
     }
   };
 
+  const startMainPlayback = async () => {
+    if (!state.mainVideo) {
+      return;
+    }
+    await attemptAutoplay();
+  };
+
+  const playPrerollThenMain = async () => {
+    if (!state.splashVideo || state.splashComplete) {
+      await startMainPlayback();
+      return;
+    }
+    showSplash();
+    state.splashVideo.currentTime = 0;
+    try {
+      await state.splashVideo.play();
+    } catch (error) {
+      state.splashVideo.classList.add("hidden");
+      state.splashComplete = true;
+      hideSplash();
+      await startMainPlayback();
+    }
+  };
+
   const setupMainVideo = async (src, type) => {
     if (!src) {
       emit("onMainError", { message: "Missing src" });
       return;
     }
+
+    state.mainVideo.loop = true;
 
     if (type === "hls" || src.endsWith(".m3u8")) {
       if (state.mainVideo.canPlayType("application/vnd.apple.mpegurl")) {
@@ -441,11 +467,15 @@
       showSplash();
     });
 
-    await attemptAutoplay();
+    showTapOverlay();
   };
 
   const attachUserActivation = () => {
     const activate = () => {
+      if (state.userActivated && state.splashComplete) {
+        state.mainVideo.play().catch(() => {});
+        return;
+      }
       state.userActivated = true;
       hideTapOverlay();
       state.mainVideo.muted = false;
@@ -453,7 +483,7 @@
       if (state.adDisplayContainer) {
         state.adDisplayContainer.initialize();
       }
-      attemptAutoplay();
+      playPrerollThenMain();
       if (state.viewVideo && state.viewVideo.src) {
         state.viewVideo.play().catch(() => {});
       }
@@ -465,6 +495,9 @@
 
     state.tapButton.addEventListener("click", activate);
     state.mainVideo.addEventListener("click", activate);
+    if (state.splash) {
+      state.splash.addEventListener("click", activate);
+    }
   };
 
   const initPostMessage = () => {
@@ -509,40 +542,27 @@
 
     state.adVideo.muted = true;
     state.adVideo.volume = 0;
+    state.mainVideo.loop = true;
+    if (state.viewVideo) {
+      state.viewVideo.loop = true;
+    }
 
     if (state.splashVideo) {
+      const completePreroll = () => {
+        if (state.splashComplete) {
+          return;
+        }
+        state.splashVideo.classList.add("hidden");
+        state.splashComplete = true;
+        hideSplash();
+        if (state.userActivated) {
+          startMainPlayback();
+        }
+      };
+
       state.splashVideo.muted = true;
-      state.splashVideo.play().catch(() => {});
-      setTimeout(() => {
-        if (!state.splashComplete) {
-          state.splashVideo.classList.add("hidden");
-          state.splashComplete = true;
-          if (state.mainStarted) {
-            hideSplash();
-          }
-        }
-      }, 4000);
-      state.splashVideo.addEventListener("ended", () => {
-        state.splashVideo.classList.add("hidden");
-        state.splashComplete = true;
-        if (state.mainStarted) {
-          hideSplash();
-        }
-      });
-      state.splashVideo.addEventListener("error", () => {
-        state.splashVideo.classList.add("hidden");
-        state.splashComplete = true;
-        if (state.mainStarted) {
-          hideSplash();
-        }
-      });
-      state.splash.addEventListener("click", () => {
-        state.splashVideo.classList.add("hidden");
-        state.splashComplete = true;
-        if (state.mainStarted) {
-          hideSplash();
-        }
-      });
+      state.splashVideo.addEventListener("ended", completePreroll);
+      state.splashVideo.addEventListener("error", completePreroll);
     }
 
     enableDrag(state.adDragHandle, state.adOverlay);
