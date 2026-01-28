@@ -29,9 +29,6 @@ export default function PipPreview({ src, type, pipSrc, pipType, vastTagUrl }: P
           vastTagUrl={vastTagUrl}
           className="player-shell"
         />
-        <p className="text-center text-xs text-white/50">
-          Tip: add <span className="font-semibold">?src=MAIN_URL&amp;type=hls&amp;pip=PIP_URL&amp;pipType=mp4</span> to preview a live feed.
-        </p>
       </div>
     </div>
   );
