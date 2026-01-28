@@ -18,6 +18,10 @@ declare global {
       vastTagUrl?: string;
     }) => void;
     RacePlayer?: {
+      play?: () => void;
+      pause?: () => void;
+      mute?: () => void;
+      unmute?: () => void;
       setAltView?: (options: { src: string; type?: string; position?: string }) => void;
       clearAltView?: () => void;
     };
