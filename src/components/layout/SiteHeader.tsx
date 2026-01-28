@@ -34,7 +34,7 @@ export function SiteHeader() {
               />
             </span>
             <div className="text-sm font-semibold uppercase tracking-[0.2em] text-white text-center">
-              Thanksgiving Rumble / Wayne Poole Memorial
+              Experience the Thrill of Racing / Wayne Poole Memorial
             </div>
             <span className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white p-1.5">
               <Image

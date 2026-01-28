@@ -32,7 +32,7 @@ const highlightStats = [
   },
   {
     label: "Weekend",
-    value: "Thanksgiving Rumble",
+    value: "Experience the Thrill of Racing",
     detail: "Two-day fall showcase with youth classes, pro shootouts, and festival energy.",
     image: brandAssets.kartRacer,
   },
@@ -52,9 +52,9 @@ const highlightStats = [
 
 const storySections = [
   {
-    title: "Thanksgiving Rumble: Festival-Style Fall Weekend",
+    title: "Experience the Thrill of Racing: Festival-Style Fall Weekend",
     summary:
-      "Paradise Raceway's Thanksgiving Rumble is now a national fall marquee, part of the WKA Dirt Series Triple Crown with six-figure purses and festival energy.",
+      "Paradise Raceway's Experience the Thrill of Racing is now a national fall marquee, part of the WKA Dirt Series Triple Crown with six-figure purses and festival energy.",
     body: [
       "Born in the mid-2010s as a Thanksgiving weekend destination, the Rumble quickly grew from a regional race into a national draw with two packed days of youth, amateur, and pro shootouts. Paradise's high-banked red clay, 180+ pit sheds, and family-friendly setup turned it into a holiday tradition.",
       "Big-money eras and WKA Triple Crown status cemented its stature: the 2021 weekend hit a ~$220K purse and introduced broad live streaming; 2022 brought spec Reaper tires to level the field; 2023 saw record crowds and Austin Banker reclaim the Wayne Poole Memorial; 2024 (10th anniversary) delivered Cameron Carter's last-lap Memorial win alongside fireworks, fan fest, parachute team drop-ins, and a two-day festival slate.",
@@ -67,26 +67,26 @@ const storySections = [
       "Karting's most coveted memorial race, honoring #92 Wayne Poole with a 50+ lap showdown now hosted at Paradise.",
     image: "/wayne-poole.png",
     body: [
-      "Founded in 2005 after Wayne's passing, the Wayne Poole Memorial race has grown into a career-making win. It ran for years at Georgia Thanksgiving Thunder before moving permanently to Paradise Raceway in 2021 as the Friday-night headliner of the Thanksgiving Rumble.",
+      "Founded in 2005 after Wayne's passing, the Wayne Poole Memorial race has grown into a career-making win. It ran for years at Georgia Thanksgiving Thunder before moving permanently to Paradise Raceway in 2021 as the Friday-night headliner of the Experience the Thrill of Racing.",
       "The race format leans into Wayne's number: 50+ laps (51 for the 2025 milestone) and payouts that always end in 92. Early years paid $5,092-to-win, later seasons jumped to $10,092, and the 2025 anniversary lands at $20,092-to-win.",
       "Past champions read like a hall of fame: Austin Banker (2017, 2023), Jesse Riggins (2021), Shay Chavous (2022), and Cameron Carter's 2024 last-lap thriller after five attempts. Winning it is a career-defining moment because the field is stacked and the distance is grueling.",
       "The 2025 program adds a Champions-of-Champions shootout plus family tributes at Paradise. Expect Wayne's family on-site, ceremonial laps, and a packed crowd tuned in on SportsActionTV for the memorial that blends emotion, prestige, and flat-out speed.",
     ],
   },
   {
-    title: "Paradise Raceway: Thanksgiving Rumble Home Track",
+    title: "Paradise Raceway: Experience the Thrill of Racing Home Track",
     summary:
       "South Carolina's karting showplace with a well-groomed dirt oval, fan-first amenities, and family-friendly vibes.",
     body: [
       "Opened in the early 2010s by Henry Moree, the 95/38 Paradise Raceway pairs a red clay surface with modern touches - 180 covered pit sheds, raised spectator walkways, a playground, a small lake, and alcohol-free grounds.",
-      "Amenities keep scaling: a VIP lounge, tiled restrooms, safety barrier upgrades, and plans for more VIP suites plus a NASCAR-style scoreboard. The track runs programs on the 2nd and 4th weekends monthly and anchors four marquee events each year, including the Thanksgiving Rumble and Wayne Poole Memorial.",
+      "Amenities keep scaling: a VIP lounge, tiled restrooms, safety barrier upgrades, and plans for more VIP suites plus a NASCAR-style scoreboard. The track runs programs on the 2nd and 4th weekends monthly and anchors four marquee events each year, including the Experience the Thrill of Racing and Wayne Poole Memorial.",
     ],
   },
 ];
 
 const highlightVideos = [
   {
-    title: "Thanksgiving Rumble Weekend Promo",
+    title: "Experience the Thrill of Racing Weekend Promo",
     description: "Set the stage for two nights of Paradise Raceway action - spot the fireworks, fan fest, and stacked grids.",
     src: "https://www.lightcast.com/embed/player.php?id=778547&share=2&autoPlay=1",
   },
@@ -99,13 +99,13 @@ const highlightVideos = [
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://watch.sportsactiontv.com"),
-  title: "Thanksgiving Rumble Weekend | SportsActionTV",
+  title: "Experience the Thrill of Racing Weekend | SportsActionTV",
   description:
-    "Stream the Thanksgiving Rumble and Wayne Poole Memorial live from Paradise Raceway. Full-weekend coverage on Roku, Fire TV, Apple TV, mobile, and web.",
+    "Stream the Experience the Thrill of Racing and Wayne Poole Memorial live from Paradise Raceway. Full-weekend coverage on Roku, Fire TV, Apple TV, mobile, and web.",
   openGraph: {
-    title: "Thanksgiving Rumble + Wayne Poole Memorial | SportsActionTV",
+    title: "Experience the Thrill of Racing + Wayne Poole Memorial | SportsActionTV",
     description:
-      "Watch the Thanksgiving Rumble and Wayne Poole Memorial live from Paradise Raceway. Full-weekend coverage with replays, multi-cam, and TV apps.",
+      "Watch the Experience the Thrill of Racing and Wayne Poole Memorial live from Paradise Raceway. Full-weekend coverage with replays, multi-cam, and TV apps.",
     url: "https://watch.sportsactiontv.com/thanksgiving-rumble",
     type: "website",
     images: [
@@ -113,15 +113,15 @@ export const metadata: Metadata = {
         url: "https://watch.sportsactiontv.com/hero-image.png",
         width: 1200,
         height: 630,
-        alt: "Thanksgiving Rumble hero",
+        alt: "Experience the Thrill of Racing hero",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Thanksgiving Rumble + Wayne Poole Memorial | SportsActionTV",
+    title: "Experience the Thrill of Racing + Wayne Poole Memorial | SportsActionTV",
     description:
-      "Live coverage of the Thanksgiving Rumble and Wayne Poole Memorial from Paradise Raceway with full replay access.",
+      "Live coverage of the Experience the Thrill of Racing and Wayne Poole Memorial from Paradise Raceway with full replay access.",
     images: ["https://watch.sportsactiontv.com/hero-image.png"],
   },
 };
@@ -161,7 +161,7 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
             </MotionDiv>
             <MotionDiv delay={0.12}>
               <h1 className="text-4xl font-semibold leading-tight md:text-5xl">
-                Thanksgiving Rumble + Wayne Poole Memorial
+                Experience the Thrill of Racing + Wayne Poole Memorial
               </h1>
             </MotionDiv>
             <MotionDiv delay={0.18}>
@@ -347,7 +347,7 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
               <div className="relative h-[300px] w-full overflow-hidden rounded-[1.25rem] sm:h-[340px] lg:h-[400px]">
                 <Image
                   src="/16-9scheulde.png"
-                  alt="Thanksgiving Rumble"
+                  alt="Experience the Thrill of Racing"
                   fill
                   sizes="(max-width: 1024px) 100vw, 640px"
                   className="object-contain object-center"
@@ -360,7 +360,7 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
             <div className="absolute inset-0">
               <Image
                 src="/helmets.png"
-                alt="Thanksgiving Rumble weekend"
+                alt="Experience the Thrill of Racing weekend"
                 fill
                 sizes="100vw"
                 className="object-cover object-[50%_20%] brightness-[1.15] transition duration-500 group-hover:scale-[1.02]"
@@ -370,7 +370,7 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
             <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-6 py-14 text-center text-white sm:px-10 lg:px-16">
               <div className="flex flex-wrap items-center justify-center gap-3 text-black">
                 <span className="rounded-full bg-yellow-300/90 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em]">
-                  Thanksgiving Rumble
+                  Experience the Thrill of Racing
                 </span>
                 <span className="rounded-full bg-yellow-300/90 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em]">
                   Two-day card
@@ -527,7 +527,7 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
             <div className="relative h-72 w-full overflow-hidden rounded-2xl sm:h-80 lg:h-96 lg:w-[520px]">
               <Image
                 src="/schedule-next-to-video.jpeg"
-                alt="Thanksgiving Rumble schedule"
+                alt="Experience the Thrill of Racing schedule"
                 fill
                 sizes="(max-width: 1024px) 100vw, 480px"
                 className="object-contain object-center scale-[0.98]"
