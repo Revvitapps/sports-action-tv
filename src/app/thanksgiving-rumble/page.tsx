@@ -121,8 +121,8 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
   const showPip = pipToggle || pipParam !== undefined || modeParam === "pip";
 
   if (showPip) {
-    const src = resolveParam(searchParams?.src) ?? "/player-main.mp4";
-    const pipSrc = (!pipToggle && pipParam) || resolveParam(searchParams?.pipSrc) || "/player-pip.mp4";
+    const src = resolveParam(searchParams?.src) ?? "/chili-bowl-promo3.mp4";
+    const pipSrc = (!pipToggle && pipParam) || resolveParam(searchParams?.pipSrc) || "/player-main.mp4";
     const type = resolveType(src, resolveParam(searchParams?.type));
     const pipType = resolveType(pipSrc, resolveParam(searchParams?.pipType));
     const vastTagUrl = resolveParam(searchParams?.vast) || undefined;

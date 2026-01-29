@@ -3,8 +3,12 @@
 import RaceAdPlayer from "../../../RaceAdPlayer";
 import PlayerControls from "./PlayerControls";
 
-const MAIN_SRC = "/player-main.mp4";
-const PIP_SRC = "/player-pip.mp4";
+const MAIN_SRC = "/chili-bowl-promo3.mp4";
+const CAMERA_SOURCES = {
+  driver: "/chili-bowl-promo2.mp4",
+  cam1: "/Chili-Bowl-promo1.mp4",
+  cam2: "/player-main.mp4",
+};
 
 export default function InlinePlayer() {
   return (
@@ -14,7 +18,7 @@ export default function InlinePlayer() {
         type="mp4"
         className="player-shell mx-auto"
       />
-      <PlayerControls showCameras pipSrc={PIP_SRC} pipType="mp4" />
+      <PlayerControls showCameras cameraSources={CAMERA_SOURCES} />
     </div>
   );
 }

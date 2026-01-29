@@ -6,8 +6,11 @@ import { cn } from "@/lib/utils";
 
 type PlayerControlsProps = {
   showCameras?: boolean;
-  pipSrc?: string;
-  pipType?: "hls" | "mp4";
+  cameraSources?: {
+    driver?: string;
+    cam1?: string;
+    cam2?: string;
+  };
   className?: string;
 };
 
@@ -18,8 +21,7 @@ const getPlayerRoot = (scope?: HTMLElement | null) => {
 
 export default function PlayerControls({
   showCameras = false,
-  pipSrc,
-  pipType,
+  cameraSources,
   className,
 }: PlayerControlsProps) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -184,13 +186,13 @@ export default function PlayerControls({
     }
   };
 
-  const handleCamSelect = () => {
-    if (!pipSrc) {
+  const handleCamSelect = (src?: string) => {
+    if (!src) {
       return;
     }
-    const resolvedType = pipType ?? (pipSrc.endsWith(".m3u8") ? "hls" : "mp4");
+    const resolvedType = src.endsWith(".m3u8") ? "hls" : "mp4";
     window.RacePlayer?.setAltView?.({
-      src: pipSrc,
+      src,
       type: resolvedType,
       position: "bottom-right",
     });
@@ -268,13 +270,31 @@ export default function PlayerControls({
           </Button>
         {showCameras && (
           <>
-            <Button type="button" variant="secondary" onClick={handleCamSelect} disabled={!pipSrc} className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => handleCamSelect(cameraSources?.driver)}
+              disabled={!cameraSources?.driver}
+              className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]"
+            >
               Driver Cam
             </Button>
-            <Button type="button" variant="secondary" onClick={handleCamSelect} disabled={!pipSrc} className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => handleCamSelect(cameraSources?.cam1)}
+              disabled={!cameraSources?.cam1}
+              className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]"
+            >
               Cam 1
             </Button>
-            <Button type="button" variant="secondary" onClick={handleCamSelect} disabled={!pipSrc} className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => handleCamSelect(cameraSources?.cam2)}
+              disabled={!cameraSources?.cam2}
+              className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]"
+            >
               Cam 2
             </Button>
           </>

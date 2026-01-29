@@ -12,6 +12,12 @@ type PipPreviewProps = {
 };
 
 export default function PipPreview({ src, type, pipSrc, pipType, vastTagUrl }: PipPreviewProps) {
+  const cameraSources = {
+    driver: "/chili-bowl-promo2.mp4",
+    cam1: "/Chili-Bowl-promo1.mp4",
+    cam2: "/player-main.mp4",
+  };
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-10">
       <div className="w-full max-w-5xl space-y-6">
@@ -29,7 +35,7 @@ export default function PipPreview({ src, type, pipSrc, pipType, vastTagUrl }: P
             vastTagUrl={vastTagUrl}
             className="player-shell"
           />
-          <PlayerControls showCameras pipSrc={pipSrc} pipType={pipType} />
+          <PlayerControls showCameras cameraSources={cameraSources} />
         </div>
       </div>
     </div>
