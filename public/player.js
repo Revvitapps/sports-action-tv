@@ -30,6 +30,7 @@
     scheduleTimer: null,
     schedule: [],
     userActivated: false,
+    activatePlayback: null,
     pendingAd: null,
     callbacks: {},
   };
@@ -539,6 +540,7 @@
       }
     };
 
+    state.activatePlayback = activate;
     state.tapButton.addEventListener("click", activate);
     state.mainVideo.addEventListener("click", activate);
     if (state.splash) {
@@ -656,6 +658,7 @@
     pause: () => state.mainVideo && state.mainVideo.pause(),
     mute: () => state.mainVideo && (state.mainVideo.muted = true),
     unmute: () => state.mainVideo && (state.mainVideo.muted = false),
+    activate: () => state.activatePlayback && state.activatePlayback(),
     triggerAd,
     clearAd,
     setSchedule,

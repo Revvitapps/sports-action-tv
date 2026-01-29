@@ -132,7 +132,11 @@ export default function PlayerControls({
     if (isPlaying) {
       window.RacePlayer?.pause?.();
     } else {
-      window.RacePlayer?.play?.();
+      if (window.RacePlayer?.activate) {
+        window.RacePlayer.activate();
+      } else {
+        window.RacePlayer?.play?.();
+      }
     }
   };
 
@@ -190,6 +194,7 @@ export default function PlayerControls({
     if (!src) {
       return;
     }
+    window.RacePlayer?.activate?.();
     const resolvedType = src.endsWith(".m3u8") ? "hls" : "mp4";
     window.RacePlayer?.setAltView?.({
       src,
