@@ -4,11 +4,6 @@
       "source": "/",
       "destination": "/chilibowl",
       "permanent": false
-    },
-    {
-      "source": "/thanksgiving-rumble",
-      "destination": "/chilibowl",
-      "permanent": false
     }
   ]
 }
