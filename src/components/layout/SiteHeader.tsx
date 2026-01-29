@@ -19,7 +19,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  if (pathname === "/thanksgiving-rumble" || pathname === "/chilibowl") {
+  if (pathname === "/chilibowl") {
     return (
       <header className="sticky top-0 z-40 border-b border-white/5 bg-background/75 backdrop-blur-xl">
         <div className="section-shell flex items-center justify-center py-4">

@@ -22,18 +22,6 @@ const nextConfig = {
   },
   output: "standalone",
 
-  async rewrites() {
-    return [
-      {
-        source: "/thanksgiving-rumble",
-        destination: "/chilibowl",
-      },
-      {
-        source: "/thanksgiving-rumble/:path*",
-        destination: "/chilibowl",
-      },
-    ];
-  },
 };
 
 export default nextConfig;
