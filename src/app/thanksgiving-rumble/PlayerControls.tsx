@@ -206,6 +206,10 @@ export default function PlayerControls({
     }
   };
 
+  const handleSwapView = () => {
+    window.RacePlayer?.swapView?.();
+  };
+
   return (
     <div
       className={cn(
@@ -304,6 +308,14 @@ export default function PlayerControls({
               className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]"
             >
               Cam 2
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleSwapView}
+              className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]"
+            >
+              Swap View
             </Button>
           </>
         )}

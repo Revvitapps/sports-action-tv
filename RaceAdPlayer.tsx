@@ -25,6 +25,7 @@ declare global {
       mute?: () => void;
       unmute?: () => void;
       activate?: () => void;
+      swapView?: () => void;
       setAltView?: (options: { src: string; type?: string; position?: string }) => void;
       clearAltView?: () => void;
     };

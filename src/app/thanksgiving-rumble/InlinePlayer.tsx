@@ -16,6 +16,8 @@ export default function InlinePlayer() {
       <RaceAdPlayer
         src={MAIN_SRC}
         type="mp4"
+        pipSrc={CAMERA_SOURCES.driver}
+        pipType="mp4"
         className="player-shell mx-auto"
       />
       <PlayerControls showCameras cameraSources={CAMERA_SOURCES} />

@@ -6,6 +6,8 @@
   const state = {
     root: null,
     mainVideo: null,
+    mainHls: null,
+    mainSource: null,
     adVideo: null,
     adOverlay: null,
     adContainer: null,
@@ -18,10 +20,12 @@
     viewOverlay: null,
     viewVideo: null,
     viewHls: null,
+    viewSource: null,
     adDragHandle: null,
     viewDragHandle: null,
     pipToggle: null,
     viewMinimized: false,
+    viewPosition: "bottom-right",
     adsLoader: null,
     adsManager: null,
     adDisplayContainer: null,
@@ -32,6 +36,8 @@
     userActivated: false,
     activatePlayback: null,
     pendingAd: null,
+    pendingView: null,
+    mainListenersAttached: false,
     callbacks: {},
   };
 
@@ -165,6 +171,7 @@
         ? "view-top-left"
         : "view-bottom-right";
     state.viewOverlay.classList.add(posClass);
+    state.viewPosition = position;
   };
 
   const updatePipToggleState = () => {
@@ -236,6 +243,7 @@
       state.viewOverlay.setAttribute("aria-hidden", "true");
     }
     state.viewMinimized = false;
+    state.viewSource = null;
     if (state.root) {
       state.root.dataset.pipMinimized = "false";
     }
@@ -390,7 +398,7 @@
     }
   };
 
-  const setAltView = async ({ src, type = "hls", position = "bottom-right" }) => {
+  const setAltView = async ({ src, type, position = "bottom-right" }) => {
     if (!state.viewOverlay || !state.viewVideo) {
       return;
     }
@@ -399,16 +407,41 @@
     setViewVisible(true);
     state.viewVideo.muted = true;
     state.viewVideo.volume = 0;
+    const resolvedType = type === "hls" || src.endsWith(".m3u8") ? "hls" : "mp4";
     try {
-      if (type === "hls" || src.endsWith(".m3u8")) {
+      if (resolvedType === "hls") {
         state.viewHls = await attachHls(state.viewVideo, src);
       } else {
         state.viewVideo.src = src;
       }
       await state.viewVideo.play();
+      state.viewSource = { src, type: resolvedType };
     } catch (error) {
       emit("onMainError", error);
     }
+  };
+
+  const applyPendingView = () => {
+    if (!state.pendingView) {
+      return;
+    }
+    const nextView = state.pendingView;
+    state.pendingView = null;
+    setAltView(nextView);
+  };
+
+  const swapViews = async () => {
+    if (!state.mainSource || !state.viewSource) {
+      return;
+    }
+    const currentMain = state.mainSource;
+    const currentView = state.viewSource;
+    await setMainSource(currentView.src, currentView.type);
+    await setAltView({
+      src: currentMain.src,
+      type: currentMain.type,
+      position: state.viewPosition || "bottom-right",
+    });
   };
 
   const triggerAd = ({ mode = "pip", vastTagUrl, durationSec = 15, clickThroughUrl }) => {
@@ -475,6 +508,23 @@
     }
   };
 
+  const setMainSource = async (src, type) => {
+    if (!state.mainVideo || !src) {
+      return;
+    }
+    if (state.mainHls) {
+      state.mainHls.destroy();
+      state.mainHls = null;
+    }
+    const resolvedType = type === "hls" || src.endsWith(".m3u8") ? "hls" : "mp4";
+    if (resolvedType === "hls") {
+      state.mainHls = await attachHls(state.mainVideo, src);
+    } else {
+      state.mainVideo.src = src;
+    }
+    state.mainSource = { src, type: resolvedType };
+  };
+
   const setupMainVideo = async (src, type) => {
     if (!src) {
       emit("onMainError", { message: "Missing src" });
@@ -482,48 +532,37 @@
     }
 
     state.mainVideo.loop = true;
+    await setMainSource(src, type);
 
-    if (type === "hls" || src.endsWith(".m3u8")) {
-      if (state.mainVideo.canPlayType("application/vnd.apple.mpegurl")) {
-        state.mainVideo.src = src;
-      } else {
-        await loadScript(HLS_SRC);
-        const hls = new Hls();
-        hls.loadSource(src);
-        hls.attachMedia(state.mainVideo);
-        hls.on(Hls.Events.ERROR, (_, data) => {
-          emit("onMainError", data);
-        });
-      }
-    } else {
-      state.mainVideo.src = src;
+    if (!state.mainListenersAttached) {
+      state.mainVideo.addEventListener("play", () => {
+        emit("onMainPlay");
+        state.mainStarted = true;
+        if (state.splashComplete) {
+          hideSplash();
+        }
+        if (state.viewVideo && state.viewVideo.src) {
+          state.viewVideo.play().catch(() => {});
+        }
+        startScheduleWatcher();
+      });
+
+      state.mainVideo.addEventListener("pause", () => emit("onMainPause"));
+      state.mainVideo.addEventListener("error", (event) => {
+        emit("onMainError", event);
+        showSplash();
+      });
+      state.mainListenersAttached = true;
     }
-
-    state.mainVideo.addEventListener("play", () => {
-      emit("onMainPlay");
-      state.mainStarted = true;
-      if (state.splashComplete) {
-        hideSplash();
-      }
-      if (state.viewVideo && state.viewVideo.src) {
-        state.viewVideo.play().catch(() => {});
-      }
-      startScheduleWatcher();
-    });
-
-    state.mainVideo.addEventListener("pause", () => emit("onMainPause"));
-    state.mainVideo.addEventListener("error", (event) => {
-      emit("onMainError", event);
-      showSplash();
-    });
 
     showTapOverlay();
   };
 
   const attachUserActivation = () => {
-    const activate = () => {
+    const activate = async () => {
       if (state.userActivated && state.splashComplete) {
         state.mainVideo.play().catch(() => {});
+        applyPendingView();
         return;
       }
       state.userActivated = true;
@@ -534,6 +573,7 @@
         state.adDisplayContainer.initialize();
       }
       playPrerollThenMain();
+      applyPendingView();
       if (state.pendingAd?.retry) {
         requestAd(state.pendingAd);
         state.pendingAd.retry = false;
@@ -648,7 +688,10 @@
     await setupMainVideo(mainSrc, mainType);
 
     if (pipSrc) {
-      setAltView({ src: pipSrc, type: pipType, position: "bottom-right" });
+      state.pendingView = { src: pipSrc, type: pipType, position: "bottom-right" };
+      if (state.userActivated) {
+        applyPendingView();
+      }
     }
   };
 
@@ -659,6 +702,7 @@
     mute: () => state.mainVideo && (state.mainVideo.muted = true),
     unmute: () => state.mainVideo && (state.mainVideo.muted = false),
     activate: () => state.activatePlayback && state.activatePlayback(),
+    swapView: () => swapViews(),
     triggerAd,
     clearAd,
     setSchedule,
