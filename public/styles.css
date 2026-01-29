@@ -40,6 +40,19 @@ body {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+  --pip-width: 28%;
+  --pip-min: 200px;
+  --pip-max: 280px;
+  --pip-bottom: 52px;
+  --pip-right: 12px;
+  --pip-left: 12px;
+  --pip-top: 12px;
+}
+
+.player-container[data-pip-size="large"] {
+  --pip-width: 36%;
+  --pip-min: 240px;
+  --pip-max: 360px;
 }
 
 .main-video {
@@ -226,29 +239,29 @@ body {
 }
 
 .view-bottom-right {
-  bottom: 72px;
-  right: 18px;
+  bottom: var(--pip-bottom);
+  right: var(--pip-right);
 }
 
 .view-bottom-left {
-  bottom: 72px;
-  left: 18px;
+  bottom: var(--pip-bottom);
+  left: var(--pip-left);
 }
 
 .view-top-right {
-  top: 18px;
-  right: 18px;
+  top: var(--pip-top);
+  right: var(--pip-right);
 }
 
 .view-top-left {
-  top: 18px;
-  left: 18px;
+  top: var(--pip-top);
+  left: var(--pip-left);
 }
 
 .mode-pip {
-  width: 28%;
-  min-width: 200px;
-  max-width: 280px;
+  width: var(--pip-width);
+  min-width: var(--pip-min);
+  max-width: var(--pip-max);
   aspect-ratio: 16 / 9;
 }
 
@@ -308,9 +321,17 @@ body {
 }
 
 @media (max-width: 720px) {
-  .mode-pip {
-    width: 42%;
-    min-width: 160px;
+  .player-container {
+    --pip-width: 42%;
+    --pip-min: 160px;
+    --pip-max: 260px;
+    --pip-bottom: 56px;
+  }
+
+  .player-container[data-pip-size="large"] {
+    --pip-width: 52%;
+    --pip-min: 200px;
+    --pip-max: 320px;
   }
 
   .mode-quarter {
@@ -327,28 +348,39 @@ body {
   }
 
   .view-bottom-right {
-    right: 12px;
-    bottom: 56px;
+    right: var(--pip-right);
+    bottom: var(--pip-bottom);
   }
 
   .view-bottom-left {
-    left: 12px;
-    bottom: 56px;
+    left: var(--pip-left);
+    bottom: var(--pip-bottom);
   }
 
   .view-top-right {
-    right: 12px;
-    top: 12px;
+    right: var(--pip-right);
+    top: var(--pip-top);
   }
 
   .view-top-left {
-    left: 12px;
-    top: 12px;
+    left: var(--pip-left);
+    top: var(--pip-top);
   }
 }
 
 @media (max-width: 480px) {
-  .mode-pip,
+  .player-container {
+    --pip-width: 56%;
+    --pip-min: 150px;
+    --pip-max: 280px;
+  }
+
+  .player-container[data-pip-size="large"] {
+    --pip-width: 66%;
+    --pip-min: 190px;
+    --pip-max: 320px;
+  }
+
   .mode-quarter {
     width: 56%;
     min-width: 150px;

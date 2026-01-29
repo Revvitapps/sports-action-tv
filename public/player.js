@@ -25,6 +25,7 @@
     viewDragHandle: null,
     pipToggle: null,
     viewMinimized: false,
+    pipSize: "default",
     viewPosition: "bottom-right",
     adsLoader: null,
     adsManager: null,
@@ -179,6 +180,15 @@
       return;
     }
     state.pipToggle.disabled = Boolean(state.adActive);
+  };
+
+  const setPipSize = (size) => {
+    if (!state.root) {
+      return;
+    }
+    const next = size === "large" ? "large" : "default";
+    state.pipSize = next;
+    state.root.dataset.pipSize = next;
   };
 
   const setViewVisible = (visible) => {
@@ -678,6 +688,9 @@
     const pipSrc = options.pipSrc || params.get("pip") || params.get("pipSrc") || "";
     const pipType = options.pipType || params.get("pipType") || (pipSrc.endsWith(".m3u8") ? "hls" : "mp4");
     const defaultVast = options.vastTagUrl || params.get("vast") || "";
+    const pipSize = options.pipSize || params.get("pipSize") || "default";
+
+    setPipSize(pipSize);
 
     if (defaultVast) {
       state.pendingAd = { mode: "pip", vastTagUrl: defaultVast, durationSec: 15 };
@@ -703,6 +716,7 @@
     unmute: () => state.mainVideo && (state.mainVideo.muted = false),
     activate: () => state.activatePlayback && state.activatePlayback(),
     swapView: () => swapViews(),
+    setPipSize: (size) => setPipSize(size),
     triggerAd,
     clearAd,
     setSchedule,

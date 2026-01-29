@@ -33,6 +33,7 @@ export default function PipPreview({ src, type, pipSrc, pipType, vastTagUrl }: P
             src={src}
             type={type}
             vastTagUrl={vastTagUrl}
+            pipSize="large"
             className="player-shell"
           />
           <PlayerControls showCameras cameraSources={cameraSources} />

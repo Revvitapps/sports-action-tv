@@ -18,6 +18,7 @@ export default function InlinePlayer() {
         type="mp4"
         pipSrc={CAMERA_SOURCES.driver}
         pipType="mp4"
+        pipSize="large"
         className="player-shell mx-auto"
       />
       <PlayerControls showCameras cameraSources={CAMERA_SOURCES} />

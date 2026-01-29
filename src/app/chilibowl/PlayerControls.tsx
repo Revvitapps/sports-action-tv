@@ -30,6 +30,7 @@ export default function PlayerControls({
   const lastVolumeRef = useRef(0.6);
   const [inView, setInView] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [pipSize, setPipSize] = useState<"default" | "large">("large");
 
   useEffect(() => {
     const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
@@ -40,6 +41,10 @@ export default function PlayerControls({
     const video = root.querySelector("[data-role='main-video']") as HTMLVideoElement | null;
     if (!video) {
       return;
+    }
+    const sizeAttr = root.dataset.pipSize;
+    if (sizeAttr === "default" || sizeAttr === "large") {
+      setPipSize(sizeAttr);
     }
 
     const syncState = () => {
@@ -206,6 +211,12 @@ export default function PlayerControls({
     }
   };
 
+  const handlePipSizeToggle = () => {
+    const nextSize = pipSize === "large" ? "default" : "large";
+    window.RacePlayer?.setPipSize?.(nextSize);
+    setPipSize(nextSize);
+  };
+
   const handleSwapView = () => {
     window.RacePlayer?.swapView?.();
   };
@@ -308,6 +319,14 @@ export default function PlayerControls({
               className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]"
             >
               Cam 2
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handlePipSizeToggle}
+              className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]"
+            >
+              PIP {pipSize === "large" ? "Small" : "Large"}
             </Button>
             <Button
               type="button"

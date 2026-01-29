@@ -6,6 +6,7 @@ type RaceAdPlayerProps = {
   pipSrc?: string;
   pipType?: "hls" | "mp4";
   pipPosition?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
+  pipSize?: "default" | "large";
   vastTagUrl?: string;
   className?: string;
 };
@@ -18,6 +19,7 @@ declare global {
       pipSrc?: string;
       pipType?: string;
       vastTagUrl?: string;
+      pipSize?: "default" | "large";
     }) => void;
     RacePlayer?: {
       play?: () => void;
@@ -26,6 +28,7 @@ declare global {
       unmute?: () => void;
       activate?: () => void;
       swapView?: () => void;
+      setPipSize?: (size: "default" | "large") => void;
       setAltView?: (options: { src: string; type?: string; position?: string }) => void;
       clearAltView?: () => void;
     };
@@ -64,6 +67,7 @@ export default function RaceAdPlayer({
   pipSrc,
   pipType,
   pipPosition = "bottom-right",
+  pipSize = "default",
   vastTagUrl,
   className,
 }: RaceAdPlayerProps) {
@@ -86,6 +90,7 @@ export default function RaceAdPlayer({
           pipSrc,
           pipType,
           vastTagUrl,
+          pipSize,
         });
         Promise.resolve(initPromise)
           .then(() => {
