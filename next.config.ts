@@ -23,7 +23,18 @@ const nextConfig = {
   output: "standalone",
 
   async redirects() {
-    return [];
+    return [
+      {
+        source: "/thanksgiving-rumble",
+        destination: "/chilibowl",
+        permanent: false,
+      },
+      {
+        source: "/thanksgiving-rumble/:path*",
+        destination: "/chilibowl",
+        permanent: false,
+      },
+    ];
   },
 };
 
