@@ -1,15 +1,5 @@
-import { HeroSection } from "@/components/sections/HeroSection";
-import { SubscribeFlowSection } from "@/components/sections/SubscribeFlowSection";
-import { EventShowcaseSection } from "@/components/sections/EventShowcaseSection";
-import { BroadcastPartnersSection } from "@/components/sections/BroadcastPartnersSection";
+import { redirect } from "next/navigation";
 
-export default function HomePage() {
-  return (
-    <>
-      <HeroSection />
-      <EventShowcaseSection />
-      <SubscribeFlowSection />
-      <BroadcastPartnersSection />
-    </>
-  );
+export default function Page() {
+  redirect("/chilibowl");
 }

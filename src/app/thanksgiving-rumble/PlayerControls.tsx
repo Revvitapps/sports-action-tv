@@ -196,6 +196,9 @@ export default function PlayerControls({
       type: resolvedType,
       position: "bottom-right",
     });
+    if (!isPlaying) {
+      window.RacePlayer?.play?.();
+    }
   };
 
   return (
