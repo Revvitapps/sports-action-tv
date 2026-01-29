@@ -22,17 +22,15 @@ const nextConfig = {
   },
   output: "standalone",
 
-  async redirects() {
+  async rewrites() {
     return [
       {
         source: "/thanksgiving-rumble",
         destination: "/chilibowl",
-        permanent: false,
       },
       {
         source: "/thanksgiving-rumble/:path*",
         destination: "/chilibowl",
-        permanent: false,
       },
     ];
   },
