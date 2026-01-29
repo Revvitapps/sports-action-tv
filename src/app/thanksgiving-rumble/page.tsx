@@ -94,7 +94,7 @@ export const metadata: Metadata = {
     title: "Experience the Thrill of Racing | SportsActionTV",
     description:
       "Watch Experience the Thrill of Racing live from Paradise Raceway. Full-weekend coverage with replays, multi-cam, and TV apps.",
-    url: "https://watch.sportsactiontv.com/thanksgiving-rumble",
+    url: "https://watch.sportsactiontv.com/chilibowl",
     type: "website",
     images: [
       {
@@ -174,7 +174,7 @@ export default function ThanksgivingRumblePage({ searchParams }: PageProps) {
                 variant="outline"
                 className="rounded-full px-10 py-6 text-lg font-semibold"
               >
-                <Link href="/thanksgiving-rumble?pip=1">
+                <Link href="/chilibowl?pip=1">
                   Player preview
                 </Link>
               </Button>

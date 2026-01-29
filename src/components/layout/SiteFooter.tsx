@@ -35,7 +35,7 @@ const footerLinks = [
 export function SiteFooter() {
   const pathname = usePathname();
 
-  if (pathname === "/thanksgiving-rumble") {
+  if (pathname === "/thanksgiving-rumble" || pathname === "/chilibowl") {
     return (
       <footer className="border-t border-white/10 bg-background/75 backdrop-blur">
         <div className="section-shell flex items-center justify-center py-6">
