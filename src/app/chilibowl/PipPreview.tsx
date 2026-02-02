@@ -13,7 +13,7 @@ type PipPreviewProps = {
 
 export default function PipPreview({ src, type, pipSrc, pipType, vastTagUrl }: PipPreviewProps) {
   const cameraSources = {
-    driver: "/chili-bowl-promo2.mp4",
+    driver: "/modified-mafia.mp4",
     cam1: "/Chili-Bowl-promo1.mp4",
     cam2: "/player-main.mp4",
   };

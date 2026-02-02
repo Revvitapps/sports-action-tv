@@ -3,9 +3,9 @@
 import RaceAdPlayer from "../../../RaceAdPlayer";
 import PlayerControls from "./PlayerControls";
 
-const MAIN_SRC = "/chili-bowl-promo3.mp4";
+const MAIN_SRC = "/crashes.mp4";
 const CAMERA_SOURCES = {
-  driver: "/chili-bowl-promo2.mp4",
+  driver: "/modified-mafia.mp4",
   cam1: "/Chili-Bowl-promo1.mp4",
   cam2: "/player-main.mp4",
 };
