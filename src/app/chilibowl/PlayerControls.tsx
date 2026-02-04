@@ -31,6 +31,7 @@ export default function PlayerControls({
   const [inView, setInView] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [pipSize, setPipSize] = useState<"default" | "large">("large");
+  const [audioNotice, setAudioNotice] = useState<string | null>(null);
 
   useEffect(() => {
     const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
@@ -93,6 +94,7 @@ export default function PlayerControls({
   const hidden = !inView && !isFullscreen;
   const [controlsVisible, setControlsVisible] = useState(true);
   const hideTimerRef = useRef<number | null>(null);
+  const audioNoticeTimerRef = useRef<number | null>(null);
 
   const bumpControls = () => {
     setControlsVisible(true);
@@ -125,6 +127,25 @@ export default function PlayerControls({
       }
     };
   }, []);
+
+  const showAudioNotice = (message: string) => {
+    setAudioNotice(message);
+    if (audioNoticeTimerRef.current) {
+      window.clearTimeout(audioNoticeTimerRef.current);
+    }
+    audioNoticeTimerRef.current = window.setTimeout(() => {
+      setAudioNotice(null);
+    }, 2600);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (audioNoticeTimerRef.current) {
+        window.clearTimeout(audioNoticeTimerRef.current);
+      }
+    };
+  }, []);
+
   const controlLabel = useMemo(() => (isPlaying ? "Pause" : "Play"), [isPlaying]);
   const volumeBars = useMemo(() => {
     if (isMuted) {
@@ -145,7 +166,7 @@ export default function PlayerControls({
     }
   };
 
-  const handleMuteToggle = () => {
+  const handleMuteToggle = async () => {
     const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
     const root = getPlayerRoot(host);
     const video = root?.querySelector("[data-role='main-video']") as HTMLVideoElement | null;
@@ -153,11 +174,19 @@ export default function PlayerControls({
       return;
     }
     if (isMuted) {
+      window.RacePlayer?.activate?.();
       const restoreVolume = lastVolumeRef.current || 0.6;
-      video.muted = false;
       video.volume = restoreVolume;
+      const unmuteResult = await window.RacePlayer?.unmuteSafe?.();
+      if (unmuteResult && !unmuteResult.ok) {
+        showAudioNotice("Audio unavailable. Check your connected output device.");
+        return;
+      }
+      if (!window.RacePlayer?.unmuteSafe) {
+        video.muted = false;
+      }
       setIsMuted(false);
-      setVolume(restoreVolume);
+      setVolume(video.volume);
     } else {
       lastVolumeRef.current = video.volume || 0.6;
       video.muted = true;
@@ -165,7 +194,7 @@ export default function PlayerControls({
     }
   };
 
-  const handleVolumeLevel = (level: number) => {
+  const handleVolumeLevel = async (level: number) => {
     const host = (document.querySelector("[data-player-root]") as HTMLElement | null) ?? null;
     const root = getPlayerRoot(host);
     const video = root?.querySelector("[data-role='main-video']") as HTMLVideoElement | null;
@@ -176,6 +205,13 @@ export default function PlayerControls({
     lastVolumeRef.current = nextVolume || lastVolumeRef.current;
     video.muted = nextVolume === 0;
     video.volume = nextVolume;
+    if (nextVolume > 0 && isMuted) {
+      const unmuteResult = await window.RacePlayer?.unmuteSafe?.();
+      if (unmuteResult && !unmuteResult.ok) {
+        showAudioNotice("Audio unavailable. Check your connected output device.");
+        return;
+      }
+    }
     setVolume(nextVolume);
     setIsMuted(nextVolume === 0);
   };
@@ -222,14 +258,20 @@ export default function PlayerControls({
   };
 
   return (
-    <div
-      className={cn(
-        "absolute bottom-3 left-1/2 z-10 flex flex-wrap items-center justify-center gap-2 rounded-full border border-white/10 bg-black/65 px-3 py-2 text-[11px] uppercase tracking-[0.24em] text-white/85 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur transition-opacity -translate-x-1/2",
-        hidden && "pointer-events-none opacity-0",
-        !controlsVisible && "opacity-0 pointer-events-none",
-        className
+    <>
+      {audioNotice && (
+        <div className="absolute bottom-[5.9rem] left-1/2 z-20 -translate-x-1/2 rounded-full border border-white/20 bg-black/75 px-4 py-2 text-[11px] uppercase tracking-[0.12em] text-white shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
+          {audioNotice}
+        </div>
       )}
-    >
+      <div
+        className={cn(
+          "absolute bottom-3 left-1/2 z-10 flex flex-wrap items-center justify-center gap-2 rounded-full border border-white/10 bg-black/65 px-3 py-2 text-[11px] uppercase tracking-[0.24em] text-white/85 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur transition-opacity -translate-x-1/2",
+          hidden && "pointer-events-none opacity-0",
+          !controlsVisible && "opacity-0 pointer-events-none",
+          className
+        )}
+      >
       <>
           <Button type="button" variant="secondary" onClick={handlePlayPause} className="h-8 px-3 text-[11px] uppercase tracking-[0.2em]">
           <span className="flex items-center gap-2">
@@ -249,7 +291,7 @@ export default function PlayerControls({
           <div className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5">
           <button
             type="button"
-            className="text-white/90 hover:text-white"
+            className="inline-flex items-center gap-1 text-white/90 hover:text-white"
             onClick={handleMuteToggle}
             aria-label={isMuted ? "Unmute" : "Mute"}
           >
@@ -261,6 +303,7 @@ export default function PlayerControls({
                 <path d="M16 9c1.5 1.5 1.5 4.5 0 6m2.5-8.5c3 3 3 8 0 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               )}
             </svg>
+            <span className="text-[9px] tracking-[0.14em]">{isMuted ? "Unmute" : "Mute"}</span>
           </button>
           <div className="flex items-end gap-1">
             {[1, 2, 3, 4].map((level) => {
@@ -339,6 +382,7 @@ export default function PlayerControls({
           </>
         )}
       </>
-    </div>
+      </div>
+    </>
   );
 }

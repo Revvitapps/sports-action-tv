@@ -7,7 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { BackgroundMedia } from "@/components/BackgroundMedia";
 
 // Absolute URL keeps social previews from falling back to the logo.
-const socialImage = "https://subscribe.sportsactiontv.com/hero-image.png";
+const socialImage = "https://subscribe.sportsactiontv.com/sat-hero-compilation.jpeg";
 
 export const metadata: Metadata = {
   title: {

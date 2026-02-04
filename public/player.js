@@ -501,6 +501,34 @@
     await attemptAutoplay();
   };
 
+  const unmuteWithFallback = async () => {
+    if (!state.mainVideo) {
+      return { ok: false, reason: "missing_video" };
+    }
+
+    const targetVolume = state.mainVideo.volume > 0 ? state.mainVideo.volume : 1;
+    state.mainVideo.volume = targetVolume;
+    state.mainVideo.muted = false;
+
+    try {
+      if (state.mainVideo.paused) {
+        await state.mainVideo.play();
+      }
+      // Give the media element a moment to settle after changing audio output state.
+      await new Promise((resolve) => setTimeout(resolve, 180));
+      if (state.mainVideo.paused) {
+        throw new Error("paused_after_unmute");
+      }
+      emit("onUnmuteSuccess");
+      return { ok: true };
+    } catch (error) {
+      state.mainVideo.muted = true;
+      state.mainVideo.play().catch(() => {});
+      emit("onUnmuteFailed", error);
+      return { ok: false, reason: error?.message || "unmute_failed" };
+    }
+  };
+
   const playPrerollThenMain = async () => {
     if (!state.splashVideo || state.splashComplete) {
       await startMainPlayback();
@@ -577,8 +605,11 @@
       }
       state.userActivated = true;
       hideTapOverlay();
-      state.mainVideo.muted = false;
-      state.mainVideo.volume = 1;
+      // Start playback muted so autoplay and audio routing issues don't stall video.
+      state.mainVideo.muted = true;
+      if (!state.mainVideo.volume) {
+        state.mainVideo.volume = 1;
+      }
       if (state.adDisplayContainer) {
         state.adDisplayContainer.initialize();
       }
@@ -713,7 +744,8 @@
     play: () => state.mainVideo && state.mainVideo.play(),
     pause: () => state.mainVideo && state.mainVideo.pause(),
     mute: () => state.mainVideo && (state.mainVideo.muted = true),
-    unmute: () => state.mainVideo && (state.mainVideo.muted = false),
+    unmute: () => unmuteWithFallback(),
+    unmuteSafe: () => unmuteWithFallback(),
     activate: () => state.activatePlayback && state.activatePlayback(),
     swapView: () => swapViews(),
     setPipSize: (size) => setPipSize(size),

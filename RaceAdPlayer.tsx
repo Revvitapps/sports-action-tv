@@ -22,10 +22,11 @@ declare global {
       pipSize?: "default" | "large";
     }) => void;
     RacePlayer?: {
+      unmuteSafe?: () => Promise<{ ok: boolean; reason?: string }>;
       play?: () => void;
       pause?: () => void;
       mute?: () => void;
-      unmute?: () => void;
+      unmute?: () => Promise<{ ok: boolean; reason?: string }>;
       activate?: () => void;
       swapView?: () => void;
       setPipSize?: (size: "default" | "large") => void;

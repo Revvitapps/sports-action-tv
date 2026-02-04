@@ -7,7 +7,7 @@ export const brandAssets = {
   helmets: "/helmets.png",
   cameraRig: "/camera.png",
   heroVideo: "/SportsActionCrash.mp4",
-  heroBackdrop: "/hero-image.png",
+  heroBackdrop: "/sat-hero-compilation.jpeg",
 };
 
 export const streamingPlatforms = [

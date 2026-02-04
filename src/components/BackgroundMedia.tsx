@@ -4,7 +4,7 @@ export function BackgroundMedia() {
   return (
     <div className="pointer-events-none fixed inset-0 -z-20">
       <Image
-        src="/hero-image.png"
+        src="/sat-hero-compilation.jpeg"
         alt=""
         fill
         priority
