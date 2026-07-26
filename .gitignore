@@ -20,3 +20,13 @@ pnpm-debug.log*
 .DS_Store
 coverage/
 tmp/
+
+# Subscriber/payment/contact data that must never be committed.
+# Anchored to the repo root (leading /) so this doesn't shadow legitimate
+# assets already tracked under public/ (promo videos, etc).
+/*.xlsx
+/*sub_list*.csv
+/*SUB_LIST*.csv
+/*easypay*
+/*Contacts*.csv
+/*.mp4

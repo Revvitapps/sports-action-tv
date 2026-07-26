@@ -2,6 +2,20 @@
   const DEFAULT_CONTACT = "mailto:ads@sportsactiontv.com";
   const IMA_SRC = "https://imasdk.googleapis.com/js/sdkloader/ima3.js";
   const HLS_SRC = "https://cdn.jsdelivr.net/npm/hls.js@1.5.15";
+  const SAFE_URL_PROTOCOLS = new Set(["http:", "https:", "mailto:"]);
+
+  // Rejects javascript:/data:/vbscript: and other script-executing schemes
+  // that could be smuggled into a click-through URL (via a VAST tag or a
+  // postMessage command), while still allowing normal ad-destination links.
+  const sanitizeUrl = (url) => {
+    if (!url) return null;
+    try {
+      const parsed = new URL(url, window.location.href);
+      return SAFE_URL_PROTOCOLS.has(parsed.protocol) ? url : null;
+    } catch {
+      return null;
+    }
+  };
 
   const state = {
     root: null,
@@ -282,7 +296,7 @@
     setOverlayMode(state.pendingAd?.mode || "pip");
     showOverlay();
     if (state.adFallback) {
-      state.adFallback.href = clickThroughUrl || DEFAULT_CONTACT;
+      state.adFallback.href = sanitizeUrl(clickThroughUrl) || DEFAULT_CONTACT;
       state.adFallback.classList.remove("hidden");
     }
     emit("onAdError", { reason: "fallback" });
@@ -629,8 +643,19 @@
     }
   };
 
-  const initPostMessage = () => {
+  const initPostMessage = (allowedOrigins) => {
+    // Default to same-origin only. A page embedding this player cross-origin
+    // and wanting postMessage control must opt in explicitly by passing
+    // allowedOrigins to initRacePlayer — we never execute a player command
+    // from an origin the embedder hasn't declared.
+    const origins = Array.isArray(allowedOrigins) && allowedOrigins.length
+      ? allowedOrigins
+      : [window.location.origin];
+
     window.addEventListener("message", (event) => {
+      if (!origins.includes(event.origin)) {
+        return;
+      }
       if (!event.data || event.data.type !== "RacePlayer") {
         return;
       }
@@ -728,7 +753,7 @@
     }
 
     attachUserActivation();
-    initPostMessage();
+    initPostMessage(options.allowedOrigins);
     await setupMainVideo(mainSrc, mainType);
 
     if (pipSrc) {

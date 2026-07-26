@@ -9,6 +9,12 @@ type RaceAdPlayerProps = {
   pipSize?: "default" | "large";
   vastTagUrl?: string;
   className?: string;
+  /**
+   * Origins allowed to control this player via postMessage. Defaults to
+   * same-origin only — pass the embedding parent page's origin(s) explicitly
+   * to enable cross-origin postMessage control.
+   */
+  allowedOrigins?: string[];
 };
 
 declare global {
@@ -20,6 +26,7 @@ declare global {
       pipType?: string;
       vastTagUrl?: string;
       pipSize?: "default" | "large";
+      allowedOrigins?: string[];
     }) => void;
     RacePlayer?: {
       unmuteSafe?: () => Promise<{ ok: boolean; reason?: string }>;
@@ -71,6 +78,7 @@ export default function RaceAdPlayer({
   pipSize = "default",
   vastTagUrl,
   className,
+  allowedOrigins,
 }: RaceAdPlayerProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
@@ -92,6 +100,7 @@ export default function RaceAdPlayer({
           pipType,
           vastTagUrl,
           pipSize,
+          allowedOrigins,
         });
         Promise.resolve(initPromise)
           .then(() => {
@@ -109,7 +118,7 @@ export default function RaceAdPlayer({
       isMounted = false;
       window.RacePlayer?.clearAltView?.();
     };
-  }, [src, type, pipSrc, pipType, pipPosition, vastTagUrl]);
+  }, [src, type, pipSrc, pipType, pipPosition, vastTagUrl, allowedOrigins]);
 
   return (
     <div className={className}>
