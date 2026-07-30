@@ -36,12 +36,22 @@ export const metadata: Metadata = {
     images: [socialImage],
   },
   metadataBase: new URL("https://subscribe.sportsactiontv.com"),
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "SportsActionTV",
+  },
+  icons: {
+    apple: "/icons/apple-touch-icon.png",
+  },
 };
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#0b0b0b",
 };
 
 export default function RootLayout({
