@@ -13,6 +13,9 @@ export function middleware(request: NextRequest) {
     pathname === "/favicon.ico" ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml" ||
+    pathname === "/manifest.webmanifest" ||
+    pathname === "/embed" ||
+    pathname.startsWith("/embed/") ||
     pathname === "/thanksgiving-rumble" ||
     pathname.startsWith("/thanksgiving-rumble/")
   ) {

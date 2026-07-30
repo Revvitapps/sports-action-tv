@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>SportsActionTV Player</title>
+  <link rel="icon" href="/icons/icon-192.png" type="image/png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    /* Full-bleed embed: the player fills the iframe edge to edge. */
+    html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+    .embed-stage { position: fixed; inset: 0; display: grid; place-items: center; background: #000; }
+    .embed-stage .player-container {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      aspect-ratio: auto;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    /* styles.css points the splash background at /public/... ; correct it here. */
+    .splash { background: #000 center/cover no-repeat; }
+  </style>
+</head>
+<body>
+  <div class="embed-stage">
+    <div class="player-container" data-race-player>
+      <video
+        class="main-video"
+        data-role="main-video"
+        playsinline
+        muted
+        preload="metadata"
+      ></video>
+
+      <div class="splash" data-role="splash" aria-hidden="false">
+        <video
+          class="splash-video"
+          data-role="splash-video"
+          playsinline
+          muted
+          preload="auto"
+        >
+          <source src="/SportsActionCrash.mp4" type="video/mp4" />
+        </video>
+        <img class="splash-image" data-role="splash-image" src="/hero-image.png" alt="SportsActionTV" />
+      </div>
+
+      <div class="view-overlay hidden mode-pip view-bottom-right" data-role="view-overlay" aria-hidden="true">
+        <div class="view-container" data-role="view-container">
+          <video class="view-video" data-role="view-video" playsinline muted></video>
+        </div>
+      </div>
+
+      <button
+        class="pip-toggle"
+        type="button"
+        data-role="pip-toggle"
+        aria-label="Toggle picture-in-picture"
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="pip-toggle-icon">
+          <path d="M6 6h12v12H6z" fill="none" stroke="currentColor" stroke-width="1.6" />
+          <path d="M9 15l6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          <path d="M12 9h3v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </button>
+
+      <div class="ad-overlay hidden mode-pip" data-role="ad-overlay" aria-hidden="true">
+        <div class="ad-badge">Sponsored</div>
+        <div class="ad-container" data-role="ad-container">
+          <video class="ad-video" data-role="ad-video" playsinline muted></video>
+          <a class="ad-fallback hidden" data-role="ad-fallback" href="#" target="_blank" rel="noreferrer">
+            <span class="ad-fallback-title">YOUR BRAND HERE</span>
+            <span class="ad-fallback-subtitle">CONTACT US</span>
+          </a>
+        </div>
+      </div>
+
+      <button class="tap-to-play hidden" type="button" data-role="tap-to-play">Tap to Play</button>
+    </div>
+  </div>
+
+  <!--
+    player.js auto-initialises the [data-race-player] root on DOMContentLoaded
+    and reads its configuration from the query string:
+      ?src=<stream>&type=hls|mp4&pip=<camera>&pipType=hls|mp4&pipSize=default|large&vast=<vast-tag>
+    postMessage control defaults to same-origin. For cross-origin control,
+    use the Next route /embed?...&allow=https://your-site.com instead.
+  -->
+  <script src="/player.js"></script>
+</body>
+</html>
